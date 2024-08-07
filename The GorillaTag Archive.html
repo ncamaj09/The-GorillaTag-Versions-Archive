@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The GorillaTag Archive</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('BG.jpg'); /* Single background image */
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            margin: 0;
+            padding: 0;
+            transition: background-image 0.5s ease-in-out;
+        }
+        .header {
+            text-align: center;
+            padding: 20px;
+        }
+        .header img {
+            max-width: 100%;
+            height: auto;
+        }
+        .tab-container {
+            display: flex;
+            cursor: pointer;
+            background-color: #f1f1f1;
+            border-bottom: 1px solid #ddd;
+        }
+        .tab {
+            flex: 1;
+            padding: 14px;
+            text-align: center;
+            background-color: #ddd;
+        }
+        .tab-content {
+            display: none;
+            padding: 20px;
+            border-top: 1px solid #ddd;
+            background-color: rgba(255, 255, 255, 0.8); /* Slightly transparent background */
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .apk-list a {
+            display: block;
+            margin: 5px 0;
+            padding: 10px;
+            background-color: #e1e1e1;
+            text-decoration: none;
+            color: #000;
+            border-radius: 4px;
+        }
+        .apk-list a:hover {
+            background-color: #ccc;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <img src="title.png" alt="Website Title"> <!-- Add your title image here -->
+    </div>
+
+    <div class="tab-container">
+        <div class="tab" onclick="showTab('info')">Info</div>
+        <div class="tab" onclick="showTab('versions')">Versions</div>
+        <div class="tab" onclick="showTab('versionInfo')">Version Info</div>
+        <div class="tab" onclick="showTab('websiteUpdates')">Website Updates</div>
+    </div>
+
+    <div id="info" class="tab-content">
+        <h2>Information</h2>
+        <p>This is a arcive of old versions of gorilla tag for the Oculus the download files are APK files which are Android Packages that act like exe files but just on android the APK files are not viruses They are 100% real and I used QuestAppVersionSwitcher to get these versions and I also want to say that this project was made because I want to have people experiance the old versions of GorillaTag instead of playing the recent versions and not being able to see those versions again. 
+</p>
+    </div>
+
+    <div id="versions" class="tab-content">
+        <h2>Versions</h2>
+        <div class="apk-list">
+            <!-- Mega Links -->
+            <a href="https://mega.nz/file/IQwABZIR#-9B6WXq7RBjnHiIGfzp4h8EWaq-cyPeVr0v2BwmlwqI" download>1.0.0 Launch Day</a>
+            <a href="https://mega.nz/file/sE4nyZja#wk2cUJgDM8A0RWVA_m41iTL6_zuFJzYkUG2ITodyW-Q" download>1.0.1</a>
+            <a href="https://mega.nz/file/1YAm0DaA#3LoJ-zUhxBWNrcLclUL61JEH-jqcegfYgEvNLcVuh3E" download>1.0.2 New Cave Map</a>
+            <a href="https://mega.nz/file/IUATWDwa#V9tJn7kzkS2oNfeYvwbsFt_w7qmQiOZLtwCiMzJcE6I" download>1.0.3 New Hat Room</a>
+            <a href="https://mega.nz/file/ZRIU3DbC#YWunVu7bJEo5D1JICk2myf-_KtoXgv_NKyyYFO17UUs" download>1.0.4 Slippery Walls</a>
+            <a href="https://mega.nz/file/sJJDCIpI#gAoxFjDojVBd2hF9PzBVBm2I4f4uoTenuezL93Eavas" download>1.0.5 New Canyons Map</a>
+            <a href="https://mega.nz/file/YUhRAD4L#VydCikRlERDSLNtApUohr0xgiNjUKAf7QG1SDXN3Lvs" download>1.0.6</a>
+            <a href="https://mega.nz/file/wcw3ADrb#gcLJClsImC6Ge07Hd8hOVuqiQqhW7Xd4kEZd9Z4zBhw" download>1.0.7</a>
+            <a href="https://mega.nz/file/IRoXiYyT#VtF2YGu_kerDIINtXTe8cWm5IJGU6JSBsQDiRsqhBFM" download>1.0.8 Message Board Added</a>
+            <a href="https://mega.nz/file/4RRh3JBS#aGZHsEd7esWWLTW-Gq9hOf3H9GDprwtPzguaMHjdfI8" download>1.0.9 No More Neon Colors</a>
+            <a href="https://mega.nz/file/0YBSkKbC#ggNFGHnvX1FnjvjjN1GjlZJIfyAx_3rxwtBR7i90Lts" download>1.0.10 No Changes</a>
+            <a href="https://mega.nz/file/sNBEGSRL#GYgSpgZmi--Pgw5quPyKzi5_Pm_CGX_JJA3Qc5iaQuc" download>1.0.11 Forest Song</a>
+
+        </div>
+    </div>
+
+    <div id="versionInfo" class="tab-content">
+        <h2>Version Info</h2>
+        <p>These versions are archived and are 100% real but servers are down cant do anything about it cuz every time i try to make a gorilla tag game with working servers unity crashes or doesn't respond also ill mention this if you are looking for older versions than these versions then go to the historical versions on github </p>
+    </div>
+
+    <div id="websiteUpdates" class="tab-content">
+        <h2>Website Updates</h2>
+        <p>I'm going to add some more versions soon. (UPDATE LOG 1)</p>
+    </div>
+
+    <script>
+        function showTab(tabId) {
+            var tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(function(tab) {
+                tab.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+        }
+        // Show the first tab by default
+        showTab('info');
+    </script>
+
+</body>
+</html>
