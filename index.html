@@ -4,20 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The GorillaTag Archive</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;700&display=swap">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-image: url('BG.jpg'); /* Single background image */
+            font-family: 'Pixelify Sans', Arial, sans-serif;
+            background-image: url('BG.jpg');
             background-size: cover;
             background-attachment: fixed;
             background-position: center;
             margin: 0;
             padding: 0;
+            color: yellow; /* Set font color to yellow */
             transition: background-image 0.5s ease-in-out;
         }
         .header {
             text-align: center;
-            padding: 20px;
+            padding: 30px;
+            background: none; /* Remove white transparent background */
         }
         .header img {
             max-width: 100%;
@@ -25,43 +28,81 @@
         }
         .tab-container {
             display: flex;
+            justify-content: center;
             cursor: pointer;
-            background-color: #f1f1f1;
-            border-bottom: 1px solid #ddd;
+            background-color: #333;
+            border-bottom: 2px solid #ddd;
         }
         .tab {
             flex: 1;
-            padding: 14px;
+            padding: 15px;
             text-align: center;
-            background-color: #ddd;
+            color: yellow; /* Set font color to yellow */
+            background-color: #555;
+            border-right: 1px solid #444;
+            transition: background-color 0.3s;
+        }
+        .tab:last-child {
+            border-right: none;
+        }
+        .tab:hover {
+            background-color: #777;
         }
         .tab-content {
             display: none;
             padding: 20px;
             border-top: 1px solid #ddd;
-            background-color: rgba(255, 255, 255, 0.8); /* Slightly transparent background */
         }
         .tab-content.active {
             display: block;
         }
         .apk-list a {
             display: block;
-            margin: 5px 0;
-            padding: 10px;
-            background-color: #e1e1e1;
+            margin: 10px 0;
+            padding: 15px;
+            background-color: #f8f8f8;
             text-decoration: none;
-            color: #000;
-            border-radius: 4px;
+            color: #333;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            transition: background-color 0.3s, color 0.3s;
         }
         .apk-list a:hover {
-            background-color: #ccc;
+            background-color: #e1e1e1;
+            color: #000;
+        }
+        .how-to-install img {
+            width: 100%;
+            max-width: 600px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+        }
+        .divider {
+            border-top: 2px dashed #ddd;
+            margin: 20px 0;
+        }
+        .socials a {
+            display: block;
+            margin: 10px 0;
+            padding: 15px;
+            background-color: #f0f0f0;
+            text-decoration: none;
+            color: #333;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            text-align: center;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .socials a:hover {
+            background-color: #e1e1e1;
+            color: #000;
         }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <img src="title.png" alt="Website Title"> <!-- Add your title image here -->
+        <img src="title.png" alt="Website Title">
     </div>
 
     <div class="tab-container">
@@ -69,18 +110,18 @@
         <div class="tab" onclick="showTab('versions')">Versions</div>
         <div class="tab" onclick="showTab('versionInfo')">Version Info</div>
         <div class="tab" onclick="showTab('websiteUpdates')">Website Updates</div>
+        <div class="tab" onclick="showTab('howToInstall')">How To Install Old Versions</div>
+        <div class="tab" onclick="showTab('socials')">Socials</div>
     </div>
 
     <div id="info" class="tab-content">
         <h2>Information</h2>
-        <p>This is a arcive of old versions of gorilla tag for the Oculus the download files are APK files which are Android Packages that act like exe files but just on android the APK files are not viruses They are 100% real and I used QuestAppVersionSwitcher to get these versions and I also want to say that this project was made because I want to have people experiance the old versions of GorillaTag instead of playing the recent versions and not being able to see those versions again. 
-</p>
+        <p>This is an archive of old versions of Gorilla Tag for the Oculus. The download files are APK files, which are Android Packages similar to EXE files on Windows. These APK files are not viruses and are 100% real. This project was created to allow users to experience older versions of Gorilla Tag instead of only playing the latest versions.</p>
     </div>
 
     <div id="versions" class="tab-content">
         <h2>Versions</h2>
         <div class="apk-list">
-            <!-- Mega Links -->
             <a href="https://mega.nz/file/IQwABZIR#-9B6WXq7RBjnHiIGfzp4h8EWaq-cyPeVr0v2BwmlwqI" download>1.0.0 Launch Day</a>
             <a href="https://mega.nz/file/sE4nyZja#wk2cUJgDM8A0RWVA_m41iTL6_zuFJzYkUG2ITodyW-Q" download>1.0.1</a>
             <a href="https://mega.nz/file/1YAm0DaA#3LoJ-zUhxBWNrcLclUL61JEH-jqcegfYgEvNLcVuh3E" download>1.0.2 New Cave Map</a>
@@ -115,21 +156,45 @@
             <a href="https://mega.nz/file/9IpwVIjT#7JmLARlJ48Qi_sEsPczvVFoe4al-oHvxHFaENdwukjg" download>1.1.14 Household Update</a>
             <a href="https://mega.nz/file/YIZwULyB#EpVdkpm9kYgk0mbZHqVrtw7l4MLPjSyZ1EtPqQfJYwA" download>1.1.15 New Mountain Map</a>
 
-
-
-
+            <!-- Add more versions as needed -->
         </div>
     </div>
 
     <div id="versionInfo" class="tab-content">
         <h2>Version Info</h2>
-        <p>These versions are archived and are 100% real but servers are down cant do anything about it cuz every time i try to make a gorilla tag game with working servers unity crashes or doesn't respond also ill mention this if you are looking for older versions than these versions then go to the historical versions on github </p>
+        <p>These versions are archived and are real, but the servers are down. If you're looking for older versions than these, check out the historical versions on GitHub.</p>
     </div>
 
     <div id="websiteUpdates" class="tab-content">
         <h2>Website Updates</h2>
-        <p>I'm going to add some more versions soon. (UPDATE LOG 1)
-           Added some more versions missed some other versions so ill be adding them soon. (UPDATE LOG 2) added some more old versions to the archive (UPDATE LOG 3)</p>
+        <p>I'm planning to add more versions soon. (UPDATE LOG 1) Added some more versions. (UPDATE LOG 2) Missed some versions, so I'll be adding them soon. (UPDATE LOG 3) Added more old versions to the archive.</p>
+    </div>
+
+    <div id="howToInstall" class="tab-content">
+        <h2>How To Install Old Versions</h2>
+        <div class="how-to-install">
+            <img src="step1.png" alt="Step 1">
+            <div class="divider"></div>
+            <img src="step2.png" alt="Step 2">
+            <div class="divider"></div>
+            <img src="step3.png" alt="Step 3">
+            <div class="divider"></div>
+            <img src="step4.png" alt="Step 4">
+            <div class="divider"></div>
+            <img src="step5.png" alt="Step 5">
+            <div class="divider"></div>
+            <img src="step6.png" alt="Step 6">
+
+
+
+            <!-- Add more steps with images as needed -->
+        </div>
+    </div>
+
+    <div id="socials" class="tab-content">
+        <h2>Socials</h2>
+        <div class="socials">                                                                                     <a href="https://www.youtube.com/@NickFlick99/videos" target="_blank">Subscribe on YouTube</a>
+        </div>
     </div>
 
     <script>
