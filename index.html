@@ -1,35 +1,34 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The GorillaTag Archive</title>
-    <link rel="stylesheet" href="https://fonts.google.com/specimen/Chakra+Petch">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch&display=swap">
     <style>
         body {
-            font-family: 'Pixelify Sans', Arial, sans-serif;
+            font-family: 'Chakra Petch', Arial, sans-serif;
             background-image: url('BG.jpg');
             background-size: cover;
             background-attachment: fixed;
             background-position: center;
             margin: 0;
             padding: 0;
-            color: yellow; /* Set font color to yellow */
+            color: yellow;
             transition: background-image 0.5s ease-in-out;
         }
         .header {
             text-align: center;
             padding: 30px;
-            background: none; /* Remove white transparent background */
         }
         .header img {
             max-width: 100%;
             height: auto;
+            animation: fadeIn 1s ease-in-out;
         }
         .tab-container {
             display: flex;
             justify-content: center;
-            cursor: pointer;
             background-color: #333;
             border-bottom: 2px solid #ddd;
         }
@@ -37,26 +36,29 @@
             flex: 1;
             padding: 15px;
             text-align: center;
-            color: yellow; /* Set font color to yellow */
+            color: yellow;
             background-color: #555;
             border-right: 1px solid #444;
-            transition: background-color 0.3s;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
         }
         .tab:last-child {
             border-right: none;
         }
         .tab:hover {
             background-color: #777;
+            transform: scale(1.05);
         }
         .tab-content {
             display: none;
             padding: 20px;
             border-top: 1px solid #ddd;
+            animation: fadeIn 0.5s ease-in-out;
         }
         .tab-content.active {
             display: block;
         }
-        .apk-list a {
+        .apk-list a, .socials a {
             display: block;
             margin: 10px 0;
             padding: 15px;
@@ -65,37 +67,31 @@
             color: #333;
             border-radius: 5px;
             border: 1px solid #ddd;
-            transition: background-color 0.3s, color 0.3s;
+            transition: background-color 0.3s, color 0.3s, transform 0.2s;
         }
-        .apk-list a:hover {
+        .apk-list a:hover, .socials a:hover {
             background-color: #e1e1e1;
             color: #000;
+            transform: translateY(-3px);
         }
         .how-to-install img {
             width: 100%;
             max-width: 600px;
             margin: 10px 0;
             border: 1px solid #ddd;
+            transition: transform 0.2s ease;
+        }
+        .how-to-install img:hover {
+            transform: scale(1.02);
         }
         .divider {
             border-top: 2px dashed #ddd;
             margin: 20px 0;
         }
-        .socials a {
-            display: block;
-            margin: 10px 0;
-            padding: 15px;
-            background-color: #f0f0f0;
-            text-decoration: none;
-            color: #333;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-            text-align: center;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        .socials a:hover {
-            background-color: #e1e1e1;
-            color: #000;
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
     </style>
 </head>
@@ -164,9 +160,15 @@
             <a href="https://mega.nz/file/dQoFAQCA#t86GcNIK9YIhZX0QAy-sS9qwm8hDMVVRe17SXg9WOrY" download>1.1.20-1</a>
             <a href="https://mega.nz/file/1NI0FTST#EO27x6K2l5oS_GZxpriVuxAxCCxVwqofPRJ5Fc-U95k" download>1.1.20-2 April First Early</a>
             <a href="https://mega.nz/file/ZchiQKZT#OPBaj6dW9f2a2mHR8EnpmTFvtv1Swpl9WZ_pHEf7o80" download>1.1.20-3 Human Tag April 1st</a>
-            
-
-            <!-- Add more versions as needed -->
+            <a href="https://mega.nz/file/hRQA0QRT#CJ_7Hs_Tu-HV1UQv1-14mQoRPtQH7FGFZuP7U_pZGzA" download>1.1.21 April Costmetics</a>
+            <a href="https://mega.nz/file/0dxjHL5T#VTxeIFTEF-ni32oJarxpb3EW89AkHhKgHsxTunDbZhE" download>1.1.21-1</a>
+            <a href="https://mega.nz/file/VY5zgTra#B6GTIjI78Q3LSdqZJo-eRQxyvUcD05JadebpcclMTa8" download>1.1.22 Rainy Update</a>
+            <a href="https://mega.nz/file/oZRWTACT#FO6o_b7bvqCLLzjXcKmRyyeNEHrZvFR_6SBOUg3mDVE" download>1.1.22-1</a>
+            <a href="https://mega.nz/file/4ApSFYKR#WrY579c6SJAB7gsciOF9AaJ1Qd1B4_LJ4IEvHhy7-do" download>1.1.22-2</a>
+            <a href="https://mega.nz/file/ocQxjZpS#rr1CmF7wJB-Bhjj6ZJgiJqB3PQNNPGde6SQaLIVy-uI" download>1.1.23</a>
+            <a href="https://mega.nz/file/ZZQFDQyR#85Ev0jq3DOLK9kCBtwbBhF_ZuJ5xAg4Ie68uiJTLdIk" download>1.1.24 Music Update</a>
+            <a href="https://mega.nz/file/ZZQFDQyR#85Ev0jq3DOLK9kCBtwbBhF_ZuJ5xAg4Ie68uiJTLdIk" download>1.1.24-1</a>
+            <a href="https://mega.nz/file/lVgFDRSa#v6ERX2B4aL-uWUGPVtKEy9F_yJ0WFiUbiqSyE87Zl-Q" download>1.1.25 Music Update</a>
         </div>
     </div>
 
@@ -177,7 +179,7 @@
 
     <div id="websiteUpdates" class="tab-content">
         <h2>Website Updates</h2>
-        <p>I'm planning to add more versions soon. (UPDATE LOG 1) Added some more versions. (UPDATE LOG 2) Missed some versions so I'll be adding them soon. (UPDATE LOG 3) Added more old versions to the archive. (UPDATE LOG 4) added more versions. (UPDATE LOG 5) added more things to social tabs).</p>
+        <p>I'm planning to add more versions soon. (UPDATE LOG 1) Added some more versions. (UPDATE LOG 2) Missed some versions so I'll be adding them soon. (UPDATE LOG 3) Added more old versions to the archive. (UPDATE LOG 4) added more versions. (UPDATE LOG 5) added more things to social tabs. (UPDATE LOG 6) added more versions and added animations and new background.</p>
     </div>
 
     <div id="howToInstall" class="tab-content">
@@ -194,28 +196,17 @@
             <img src="step5.png" alt="Step 5">
             <div class="divider"></div>
             <img src="step6.png" alt="Step 6">
-
-
-
-            <!-- Add more steps with images as needed -->
         </div>
     </div>
 
     <div id="socials" class="tab-content">
         <h2>Socials</h2>
-        <div class="socials">                                                                                                                                <a href="https://www.youtube.com/@NickFlick99/videos" target="_blank">Creator of websites YT</a>
-<a href="https://www.meta.com/experiences/gorilla-tag/4979055762136823/" target="_blank">Gorilla Tag Page</a>
-<a href="https://x.com/LemmingVR" target="_blank">Lemmings Twitter</a>
-<a href="https://omniarchive.uk/" target="_blank">OmniArchive's Page</a>
-<a href="https://sidequestvr.com/app/5333/questappversionswitcher" target="_blank">QuestAppVersionSwitcher (SideQuest)</a>
-
-
-
-
-
-
-
-
+        <div class="socials">
+            <a href="https://www.youtube.com/@NickFlick99/videos" target="_blank">Creator of websites YT</a>
+            <a href="https://www.meta.com/experiences/gorilla-tag/4979055762136823/" target="_blank">Gorilla Tag Page</a>
+            <a href="https://x.com/LemmingVR" target="_blank">Lemmings Twitter</a>
+            <a href="https://omniarchive.uk/" target="_blank">OmniArchive's Page</a>
+            <a href="https://sidequestvr.com/app/5333/questappversionswitcher" target="_blank">QuestAppVersionSwitcher (SideQuest)</a>
         </div>
     </div>
 
@@ -227,7 +218,6 @@
             });
             document.getElementById(tabId).classList.add('active');
         }
-        // Show the first tab by default
         showTab('info');
     </script>
 
