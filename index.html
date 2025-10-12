@@ -1,393 +1,2053 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The GorillaTag Version Archive</title>
-    <link rel="icon" type="image/png" href="icon.png">
-    <div class="footer" style="text-align: center; padding: 10px; background-color: #333; color: Goldenrod; position: fixed; bottom: 0; width: 100%;">
-    The GorillaTag Version Archive released 08/06/2024
-</div>
+<link rel="icon" type="image/png" href="favicon.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The GorillaTag Version Archive</title>
+<style>
+  @font-face {
+    font-family: 'CustomFont';
+    src: url('Gorilla.otf') format('opentype');
+  }
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #000;
-            color: goldenrod;
-            margin: 0;
-            padding: 0;
-            background-image: url('BG_1.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            height: 100vh;
-        }
+  body {
+    font-family: 'CustomFont', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-color: #000;
+  }
 
-        header {
-            text-align: center;
-            margin: 20px;
-        }
+  #bg-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    opacity: 0.95;
+  }
 
-        header img {
-            max-width: 300px;
-            height: auto;
-        }
+  header {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    background: rgba(51,51,51,0.8);
+    color: #fff;
+    position: relative;
+    z-index: 2;
+    transition: all 0.3s ease;
+  }
+  header img {
+    height: 100px;
+    margin-right: 20px;
+  }
 
-        nav {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
+  .tabs {
+    display: flex;
+    background: #000;
+    position: relative;
+    z-index: 2;
+  }
+  .tab {
+    padding: 10px 20px;
+    cursor: pointer;
+    color: gold;
+    flex: 1;
+    text-align: center;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    background: #000;
+  }
+  .tab:hover { transform: scale(1.05); background: #ffd700; color: #000; }
+  .tab.active { background: #ffd700; color: #000; }
 
-        nav button {
-            background-color: #444;
-            color: goldenrod;
-            border: none;
-            padding: 10px 20px;
-            margin: 0 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
+  .tab-content {
+    display: none;
+    padding: 20px;
+    background: rgba(0,0,0,0.5);
+    margin: 20px;
+    border-radius: 10px;
+    color: #fff;
+    position: relative;
+    z-index: 1;
+    animation: fadeIn 0.5s ease;
+  }
+  .tab-content.active { display: block; }
 
-        nav button.active {
-            background-color: goldenrod;
-            color: #000;
-        }
+  iframe {
+    width: 100%;
+    height: calc(100vh - 140px);
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+  }
 
-        .tab {
-            display: none;
-            padding: 20px;
-        }
+  .youtube-video {
+    width: 560px;
+    max-width: 100%;
+    height: 315px;
+    border: none;
+    border-radius: 10px;
+  }
 
-        .tab.active {
-            display: block;
-        }
+  @keyframes fadeIn {
+    from {opacity: 0; transform: translateY(10px);}
+    to {opacity: 1; transform: translateY(0);}
+  }
 
-        #versions-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
+  hr {
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 20px 0;
+  }
+  a { color: #ffd700; text-decoration: none; }
+  a:hover { text-decoration: underline; }
 
-        #versions-table th, #versions-table td {
-            border: 1px solid goldenrod;
-            padding: 10px;
-            text-align: left;
-        }
+  .versions-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background: rgba(0,0,0,0.7);
+    border-radius: 10px;
+    overflow: hidden;
+  }
 
-        #versions-table th {
-            background-color: #222;
-        }
+  .versions-table th, .versions-table td {
+    padding: 12px 15px;
+    text-align: center;
+    color: #fff;
+    border-bottom: 1px solid #444;
+  }
 
-        #versions-search {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            font-size: 16px;
-        }
+  .versions-table th {
+    background: #ffd700;
+    color: #000;
+    font-weight: bold;
+  }
 
-        #versions-container {
-            max-height: 400px;
-            overflow-y: auto;
-        }
+  .versions-table tr:hover {
+    background: rgba(255, 215, 0, 0.2);
+  }
 
-        a {
-            color: lightblue;
-            text-decoration: none;
-        }
+  .download-btn {
+    background: #ffd700;
+    color: #000;
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+  }
 
-        a:hover {
-            text-decoration: underline;
-        }
-    </style>
+  .download-btn:hover {
+    background: #fff;
+    color: #000;
+  }
+
+  .toggle-btn {
+    background: #ffd700;
+    color: #000;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+  }
+  .toggle-btn:hover {
+    background: #fff;
+  }
+
+</style>
 </head>
 <body>
-    <header>
-        <img src="title.png" alt="Gorilla Tag Archive">
-    </header>
 
-    <nav>
-        <button onclick="showTab('info')" class="active">Info</button>
-        <button onclick="showTab('versions')">Versions</button>
-        <button onclick="showTab('socials')">Socials</button>
-    </nav>
+<div id="bg-container"></div>
 
-    <section id="info" class="tab active">
-        <h1>Welcome to The GorillaTag Version Archive!</h1>
-        <p>This website provides old versions of the VR game GorillaTag versions from 2020 - 2023. This archive was made too experience old versions of the game or just to go back in time. The files provided in all of the versions listed in the versions tab are downloadable apk files with mega links. the apk's will only work for Oculus headsets. in order to download these versions on to your headset you must unable developer mode and then after unabling developer mode download any file explorer that works on the Oculus headset. The Oculus's operating system is android but modified for VR games. Then download any version of the game from this archive and then go to your file explorer and go to your downloads folder. After going to your downloads folder click on the version of the game that you installed from the website and after that it should install the version of the game. If it says that it could not install that version you must delete GorillaTag from your headset and reinstall the downloaded apk also when you delete GorillaTag it will save your data because GorillaTag uses Proton and Playfab ID's. Also this website is on V2 because the old websites links were just weird so I wanted to create the bigger version of the website. Also my insperations from creating this website is OmniArchive and GorillaTag because omniarchive stores old versions of minecraft like a Database and GorillaTag because I started playing the game when it was christmas of 2022 and i really wanted to visit that version again.</p>
-    </section>
+<header>
+  <img src="title.png" alt="Logo">
+  <h1></h1>
+</header>
 
-    <section id="versions" class="tab">
-        <input type="text" id="versions-search" placeholder="Search for a version..." oninput="filterVersions()">
-        <div id="versions-container">
-            <table id="versions-table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Date</th>
-                        <th>Download</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Table rows will be dynamically generated here -->
-                </tbody>
-            </table>
-        </div>
-    </section>
+<div class="tabs">
+  <div class="tab active" data-tab="info">Info</div>
+  <div class="tab" data-tab="news">News</div>
+  <div class="tab" data-tab="versions">Versions</div>
+  <div class="tab" data-tab="install">How to Install</div>
+  <div class="tab" data-tab="socials">Socials</div>
+  <div class="tab" data-tab="other-versions">Other Website Versions</div>
+</div>
 
-    <section id="socials" class="tab">
-        <h2>Socials, Insperations, Credits</h2>
-        <ul>
-            <li><a href="https://oculusdb.rui2015.me" target="_blank">OculusDB</a></li>
-            <li><a href="https://www.youtube.com/@TheGorillaTagVersionArchiv/featured" target="_blank">The GorillaTag Version Archive YT</a></li>
-            <li><a href="https://sidequestvr.com/" target="_blank">SideQuest</a></li>
-            <li><a href="https://www.gorillatagvr.com/#explore-monke-section" target="_blank">GorillaTag Website</a></li>
-            <li><a href="https://omniarchive.net/downloads/" target="_blank">OmniArchive</a></li>
-            <li><a href="https://github.com/ComputerElite/QuestAppVersionSwitcher/releases" target="_blank">QuestAppVersionSwitcher</a></li>
-            <li><a href="https://www.meta.com/experiences/gorilla-tag/4979055762136823/" target="_blank">GorillaTag Download Meta</a></li>
-            <li><a href="https://store.steampowered.com/app/1533390/Gorilla_Tag/" target="_blank">GorillaTag Download Steam</a></li>
-            <li><a href="https://x.com/LemmingVR" target="_blank">LemmingVR's Twitter Page</a></li>
-            <li><a href="https://discord.com/invite/cFbMuwyTHk" target="_blank">GorillaTag Discord Server</a></li>
-            <li><a href="https://www.youtube.com/@omniarchive" target="_blank">OmniArchive YT</a></li>
-            <li><a href="https://github.com/lunakittyyy/GTHistoricalBuilds" target="_blank">GTHistoricalVersions</a></li>
-            <li><a href="https://tgtva.itch.io/the-gorillatag-version-archive" target="_blank">The GorillaTag Version Archive Itch.io</a></li>
-        </ul>
-    </section>
+<div class="tab-content active" id="info">
+  <h2>Info about this site</h2>
+  <p>This is a archive full of official Gorilla Tag Versions from 2020 - 2023 this archive was made so the old versions many of the community grew up with are still alive and are functional and work properly.</p>
+  <hr>
+  <h3></h3>
+  <p>now there are only .APK and PCVR zip files Oculus headsets are basically android devices but modifiyed for VR gaming I would suggest getting a file Explorer on you Oculus headset I would recommend Google Files or CX File Explorer also you would have to get these file explorers by using the SideQuest Advanced Installer to sideload the apk file onto the headset as a unknown app and also the link for the SideQuest Advanced Installer will be in the Social Tab.</p>
+  <hr>
+  <h3>Website Released</h3>
+  <p>Aug-06-2024</p>
+</div>
 
-    <script>
-        const tabs = document.querySelectorAll('nav button');
-        const tabContents = document.querySelectorAll('.tab');
+<div class="tab-content" id="news">
+  <h2>Latest News</h2>
+  <hr>
+  <h3>Update 3.0 Officially Released</h3>
+  <p>Its been a while since I uploaded the last update of the archive but im back i got tired of the way V2 looked so I went for a mix of both V1 and V2 togeather to make V3 I also have updated the Versions Tab and I also broght back the News Tab and the How To Install Tab back also when I was developing the website to version 3 Also older PCVR Files are found only in the prototype versions of GorillaTag but ill add the newer ones next update. thanks for waiting :]  </p>
+  <hr>
+</div>
 
-        function showTab(tabId) {
-            tabs.forEach(button => button.classList.remove('active'));
-            tabContents.forEach(content => content.classList.remove('active'));
-            document.querySelector(`#${tabId}`).classList.add('active');
-            document.querySelector(`nav button[onclick="showTab('${tabId}')"]`).classList.add('active');
-        }
+<div class="tab-content" id="versions">
+  <h2>Downloadable Versions</h2>
+  <button class="toggle-btn" id="toggle-pcvr">Toggle PCVR Versions</button>
 
-        const versions = [
-            { name: 'WowGraphics', date: '8/13/2020', file: 'https://mega.nz/file/sZxTnJCD#zxp1sg2YBLmLAsu_akPkpiy-ByeDoOhiMLtzhp0AVEE' },
-    { name: 'TagRumble', date: '8/21/2020', file: 'https://mega.nz/file/AMQSlTTC#hZKfEQqnC9UgBcgcLhUegPyYaD87QTzi70AyAON-loc' },
-    { name: 'Scoreboard', date: '8/29/2020', file: 'https://mega.nz/file/xJZFiDoR#NxVl5TPc6BHZ_dPntZYoKhmTLnmqSoSW85kZsEPkotk' },
-    { name: 'TutorialName', date: '8/4/2020', file: 'https://mega.nz/file/JFxlVBiK#j_zO-uqPn52lKy09yJshE-7OSmjDFr1cL9DEaJRkAbk' },
-    { name: 'Fingers', date: '8/7/2020', file: 'https://mega.nz/file/URhDBaAI#gDm-axOt-W26dsGOd7zTu83fY4g7NMhMctFfiwbp72A' },
-    { name: 'Cave', date: '8/8/2020', file: 'https://mega.nz/file/NIp13CzB#MFYsnjnbcUhavHYGHDMpyI4A8aiEJiGowM73Q9PdT8Q' },
-    { name: 'PreAlpha1dot4', date: '12/19/2020', file: 'https://mega.nz/file/IJ42TB4Z#4a3rxcJsRmCy7Pf0MHT0rK6ijuRJR8cY7nZu7DmslmM' },
-    { name: 'PreAlpha1dot5', date: '12/19/2020', file: 'https://mega.nz/file/UV4nkSqA#0ueWvuL_iAHGn5IYWWtRlc0Qzy0lN4YIkTLE0ARzkzM' },
-    { name: 'PreAlpha1dot5v2', date: '12/19/2020', file: 'https://mega.nz/file/oNJV1AAD#S6VHeT9dUQWeImSgAP6EZPMSWr4MsYnv2w-t6qSFlTE' },
-    { name: 'PreAlpha1dot5v3hotfix', date: '12/24/2020', file: 'https://mega.nz/file/YRB2RS4A#p_GRRm4yphX5K5HLa0j_ZaKYJqVy8-e3mu1w5M3rwT4' },
-    { name: 'PreAlpha1dot6', date: '12/29/2020', file: 'https://mega.nz/file/QMg0EYYY#N6uAV7hgPS6fFxWK1KWJjKnpPridBjUyypT3lkV8cXo' },
-    { name: 'GorillaLocoFeb20', date: '2/20/2020', file: 'https://mega.nz/file/tcRFkJJZ#z-oYBt4bndTG2dp7bWA4FCFHPcHyH8BYi6FKZaRnI_I' },
-    { name: 'Gorilla124', date: '1/28/2020', file: 'https://mega.nz/file/1MokHYZY#j4Kfbb2YYN53Rw3ky5IQvHa38bExJ91ROe5jA-IgTDc' },
-    { name: 'PVE', date: '7/16/2020', file: 'https://mega.nz/file/ldQ12SKb#8Nb8-N1UzsBVbqcEjKmR47blnM3b1hkFeEGAQqa0d9c' },
-    { name: 'PVEfix', date: '7/16/2020', file: 'https://mega.nz/file/RUQWzbra#7Rc_FEBQN13gBlW8iz3tjGkxJVjCxW00SJjmr0bCDus' },
-    { name: 'GorillaTagMay31Final', date: '5/31/2020', file: 'https://mega.nz/file/AQgniTCC#x_mM8M2CoStJB0Ozq7tSvrLHip13wXtCMF5i5sm_uvo' },
-    { name: 'GorillaTagCaveJune9', date: '6/9/2020', file: 'https://mega.nz/file/UIJyhRYa#dr8abXAErPhdBRmtzA3WONdkXXp9fVC-ZpjDnhdFB1s' },
-    { name: 'TransparentBlue', date: '6/11/2020', file: 'https://mega.nz/file/4IIWGbBI#K0VS-awfXfJOGGtbujMWvjGLBVRSwq9hdnjJEbJRrxY' },
-    { name: 'Crusher', date: '6/12/2020', file: 'https://mega.nz/file/oFxjFDxI#fQszyA09SaARUcm6ecmW1Mo_lN_iAojTDzYwf0zaNG8' },
-    { name: 'MessagesOptimize', date: '6/12/2020', file: 'https://mega.nz/file/FRAkhbZR#ExAn1-K-_slE6eI2jp66Rfzh45um_WjO051iv14ydi0' },
-    { name: 'ServerIsKill', date: '6/12/2020', file: 'https://mega.nz/file/dJZXWDxC#49BJzXdosm19RKjK3JELH_jIHMijp4AwJB2kuhxUJIQ' },
-    { name: 'CTFproto', date: '6/14/2020', file: 'https://mega.nz/file/tVhBUIqb#2uXMHXmHJglUg5wy7nVU4DP6DgZUGNYHMVaRv-2Mv0w' },
-    { name: 'CTFproto1', date: '6/14/2020', file: 'https://mega.nz/file/tURjUKTA#GwSsfTkUVWY7XNGfdc7akKYfAcR4NAG0aWYYeEIcXk4' },
-    { name: 'CTFprotoBetter', date: '6/14/2020', file: 'https://mega.nz/file/dJRgUCyD#PL0B9Aq4mH2RKLAR6LoAmqXjXls-fwc2A53uj-ZX2Bg' },
-    { name: 'CTFprotoBetterer', date: '6/14/2020', file: 'https://mega.nz/file/0Z4gwZaY#Xe8H6EkOURHDcggu82BkFbsk2SsdyGBb6SF8QoNqEzI' },
-    { name: 'CTFprotoNapTime', date: '6/15/2020', file: 'https://mega.nz/file/gZJkGayR#Uuw7i5DJGpzrxRaSq3MII08X5aVGWSJlyBylxSphzPY' },
-    { name: 'CTFprotoNapTime1', date: '6/15/2020', file: 'https://mega.nz/file/gFwhTQoC#gmcFVG1FoH7M2PjJZTgU8PwGcZ6PAum0FekJrVOT9es' },
-    { name: 'CTFprotoSleepTime', date: '6/15/2020', file: 'https://mega.nz/file/NBQxWKrb#Tc-ASG_OtOZBk0FM7Lw82hnOE4uwfnwh1EoZiK3nvGc' },
-    { name: 'CTFprotoAlive', date: '6/16/2020', file: 'https://mega.nz/file/AUohBI5Y#MaQKR6iYOW-UoDRKtYfeOlDp4OstvvePBmp_0A70tPs' },
-    { name: 'CTFprotoDead', date: '6/16/2020', file: 'https://mega.nz/file/wcZBkZQa#ZX42CTcZuDeoePRr1CswIC2DIZcP8pU6YZacN1kXzZ0' },
-    { name: 'CTFprotoSpirit', date: '6/17/2020', file: 'https://mega.nz/file/QQRCjDxb#YiMapvmq7kgifcCFFwczt3syUFqx8HFx1Shx0afMSJk' },
-    { name: 'GorillaTagJune1Live', date: '6/2/2020', file: 'https://mega.nz/file/oJwk3YIZ#5z7XYuMHcFo7GYdJsSVejEfdVAuUTT98HaFQxKFsamc' },
-    { name: 'Lobby', date: '6/23/2020', file: 'https://mega.nz/file/dEJUHYzI#lY-IYX5XzZbT4fgCSnCmPLnj2XMpE-cnuwdLb1AVnxs' },
-    { name: 'ColorPick', date: '6/29/2020', file: 'https://mega.nz/file/kMQxCADC#PGIYCST740K97vsBcBza7Ji9ui7gK8Ma8Eb_blrFyDM' },
-    { name: 'GorillaTagJune5', date: '6/5/2020', file: 'https://mega.nz/file/8UQB0JhI#_tjGpQDYkrimG_mUE7WSYhJc4EGenHGI8rl8Kna8JvI' },
-    { name: 'GorillaTagJune6', date: '6/6/2020', file: 'https://mega.nz/file/AMgwnCBT#9KmYh1Svkyi4aTvR-pdwjjZzRsARQ_pL6tigba2m1mo' },
-    { name: 'GorillaTagJune7hotfix', date: '6/7/2020', file: 'https://mega.nz/file/JcZDxYCZ#RbZz9eWNisGb3BWjRQEI-fMpQQpPLr3ADBP3hDeFn0A' },
-    { name: 'GorillaTagCaveTestJune9', date: '6/9/2020', file: 'https://mega.nz/file/5ABi2ZLA#qAojpe4ltnDNRuWILFvi1AMfi1ErlNwoHyKdUHc000M' },
-    { name: 'GorillaTagMay25Finalv2', date: '5/25/2020', file: 'https://mega.nz/file/NEowWKZA#IYBatdPsYvFf9nFLF8UbaYfShahU5JjlPHNIe39E98Y' },
-    { name: 'GorillaTagMay26Final', date: '5/26/2020', file: 'https://mega.nz/file/9V5hWBJS#HjRAa1RrQfsTGzbsncdmLSC0Xrn_oX1WjeMflU4lO6M' },
-    { name: 'GorillaTagMay27', date: '5/27/2020', file: 'https://mega.nz/file/IcIhlLKK#WhYImjt0ZJVNC0U2rUvYftqSS5bmixtUqqxE_X8CJHU' },
-    { name: 'GorillaTagMay27Final', date: '5/27/2020', file: 'https://mega.nz/file/tJR2HTbA#fV17x0mPtwdnoB3xd7jJYpJlRpxPKpCnnWJw1QmRuqc' },
-    { name: 'GorillaTagMay28Final', date: '5/28/2020', file: 'https://mega.nz/file/kR5iWI6b#qLxzkp_XKT4HoKNw-f0pYqTlronNrwiSKKDS5cjZ47o' },
-    { name: 'GorillaTagMay29Early', date: '5/28/2020', file: 'https://mega.nz/file/5RpSXR5Y#RZWqYcgeGgPtEK3oYdveOZgz3qIKyfZOIISi9fKcnZg' },
-    { name: 'GorillaTagMay30Collision', date: '5/30/2020', file: 'https://mega.nz/file/dEwEVCxD#i8JiH85qnoI3tpGtow4Jl9zZbI3Zp_7LzCrJ2NL_KYg' },
-    { name: 'GorillaTagMay30InfectionUpdateFingersCrossed', date: '5/30/2020', file: 'https://mega.nz/file/EdZVhSqZ#M47nHyws6Ejlb9rgmPS9O8ucxazM5I5-ZRJzsLp_1a8' },
-    { name: 'GorillaTagMay30InfectionBreakFix', date: '5/30/2020', file: 'https://mega.nz/file/VRRQWLqZ#pMDrHBPbfjqyYCFTRG4zcDXnC87G_Dmi2X5YKckzAog' },
-    { name: 'PitForest', date: '11/12/2020', file: 'https://mega.nz/file/QU5wXQiY#4hVc4vk3A04t9s5nSwlDS-eyapoQM8GyJytAjGTKnJU' },
-    { name: 'PreAlpha', date: '11/17/2020', file: 'https://mega.nz/file/sNwmGLSa#RXLTxv1ktUfigzOM1mSbuxAcYasWJRYEiuWkmGEp_jU' },
-    { name: 'PreAlpha1dot1', date: '11/22/2020', file: 'https://mega.nz/file/9I4AxQqZ#ucWWZ644U0w4d8RJrrRdiCTknnQaEtrTT7E168cwt1Q' },
-    { name: 'PreAlpha1dot2', date: '11/25/2020', file: 'https://mega.nz/file/lBoC2QjA#qRoY2jI7Rl5uJLpwaaKvh8Z_o9lZ4EAm6nIqrlMSAew' },
-    { name: 'NewMovement', date: '10/18/2020', file: 'https://mega.nz/file/cFBDlaaB#KqXD88Wm92Uqroar6MQN_dgYz-arbdX7hrVOekrRjZE' },
-    { name: 'StickTurnFix', date: '10/19/2020', file: 'https://mega.nz/file/YUI02TZR#5KFsNIpcZ3wtWJvvmfxnohn-lglf8xH7SM_pigHsQVs' },
-    { name: 'PerfFix', date: '9/12/2020', file: 'https://mega.nz/file/oYw3WYqJ#lZ7wrP7xt9HJ_sdrSd9VQS53-6UQXO31uzrV4vuzMFA' },
-    { name: '1v1UntestedLol', date: '9/19/2020', file: 'https://mega.nz/file/1Yh0xLCS#FIKnB4YO6Q6MCT_5VbVNUL7tsZbWE9upfKUvsR8Z5IU' },
-    { name: 'BodyTag', date: '9/26/2020', file: 'https://mega.nz/file/BVZjWaRC#OKx0DmL8N2TYsDt5Vag_-RmcfP0KMDrkXhMm3Ey3RfM' },
-    { name: 'BodyTagPerf', date: '9/27/2020', file: 'https://mega.nz/file/9FxxSDba#zOVkczILrdWn9xfCWFT-48fX4mkxWaURsYelQMieftk' },
-    { name: 'XP', date: '9/6/2020', file: 'https://mega.nz/file/dQ5GlQ7L#8_WHUmbXrVTtgp1CGA82JqB5goISV70DvbZ85RMr7po' },
-    { name: 'XPfix', date: '5/30/2020', file: 'https://mega.nz/file/dABUmLqa#wKmoWUBGod_n00ct1kKUHb23ew5tVe9xw12MXTE_5N0' },
-    { name: 'GorillaTag101', date: '2/15/2021', file: 'https://mega.nz/file/hE4mBa7J#R-ZY1Q4ULI-5_rh4aE5ahqwCA-RocmrpojoTkiRpZrQ' },
-    { name: 'PreAlpha1dot8', date: '2/4/2021', file: 'https://mega.nz/file/ABIzTYKK#-L9g7SK5UxQa1m4PjnAIFio97V4S7voUhVHZ2KTih90' },
-    { name: 'GorillaTag100', date: '2/7/2021', file: 'https://mega.nz/file/gJRRlBQY#0yYBe26sPpBCZgleI71hKDXudPFC2ajott4jJS2oPhY' },
-    { name: 'PreAlpha1dot7', date: '2/7/2021', file: 'https://mega.nz/file/AEBUFKxQ#R7JtQs_ptAlklUxQ4DCGBhbipK91hz9i0m5aSgAWpMA' },
-                { name: 'GorillaTag v1.0.0 Launch Day', date: '2/4/2021 - 5:19:41 AM', file: 'https://mega.nz/file/IQwABZIR#-9B6WXq7RBjnHiIGfzp4h8EWaq-cyPeVr0v2BwmlwqI' },
-                { name: 'GorillaTag v1.0.1', date: '2/7/2021 - 2:52:27 AM', file: 'https://mega.nz/file/sE4nyZja#wk2cUJgDM8A0RWVA_m41iTL6_zuFJzYkUG2ITodyW-Q' },
-                { name: 'GorillaTag v1.0.2 New Cave Map', date: '3/12/2021 - 5:44:48 PM', file: 'https://mega.nz/file/1YAm0DaA#3LoJ-zUhxBWNrcLclUL61JEH-jqcegfYgEvNLcVuh3E' },
-                { name: 'GorillaTag v1.0.3 New Hat Room', date: '3/16/2021 - 10:51:38 PM', file: 'https://mega.nz/file/IUATWDwa#V9tJn7kzkS2oNfeYvwbsFt_w7qmQiOZLtwCiMzJcE6I' },
-                { name: 'GorillaTag v1.0.4 Slippery Walls', date: '4/1/2021 - 12:14:35 AM', file: 'https://mega.nz/file/ZRIU3DbC#YWunVu7bJEo5D1JICk2myf-_KtoXgv_NKyyYFO17UUs' },
-                { name: 'GorillaTag v1.0.5 New Canyons Map', date: '4/17/2021 - 12:23:22 PM', file: 'https://mega.nz/file/sJJDCIpI#gAoxFjDojVBd2hF9PzBVBm2I4f4uoTenuezL93Eavas' },
-                { name: 'GorillaTag v1.0.5.1', date: '4/17/2021 - 1:26:12 PM', file: 'https://mega.nz/file/1ZplQAJR#7qQG5N3i5iVMILG-lF9_Weq4B3Vf9B8auopv4aShn5E' },
-                { name: 'GorillaTag v1.0.6', date: '5/2/2021 - 6:28:08 AM', file: 'https://mega.nz/file/YUhRAD4L#VydCikRlERDSLNtApUohr0xgiNjUKAf7QG1SDXN3Lvs' },
-                { name: 'GorillaTag v1.0.7', date: '5/23/2021 - 4:06:27 PM', file: 'https://mega.nz/file/wcw3ADrb#gcLJClsImC6Ge07Hd8hOVuqiQqhW7Xd4kEZd9Z4zBhw' },
-                { name: 'GorillaTag v1.0.8 New Message Board', date: '6/11/2021 - 3:43:27 AM', file: 'https://mega.nz/file/IRoXiYyT#VtF2YGu_kerDIINtXTe8cWm5IJGU6JSBsQDiRsqhBFM' },
-                { name: 'GorillaTag v1.0.9 No More Neon Colors', date: '6/28/2021 - 9:20:42 PM', file: 'https://mega.nz/file/4RRh3JBS#aGZHsEd7esWWLTW-Gq9hOf3H9GDprwtPzguaMHjdfI8' },
-                { name: 'GorillaTag v1.0.10 No Changes', date: '7/12/2021 - 4:37:37 AM', file: 'https://mega.nz/file/0YBSkKbC#ggNFGHnvX1FnjvjjN1GjlZJIfyAx_3rxwtBR7i90Lts' },
-                { name: 'GorillaTag v1.0.11 Forest Song', date: '8/2/2021 - 5:28:58 AM', file: 'https://mega.nz/file/sNBEGSRL#GYgSpgZmi--Pgw5quPyKzi5_Pm_CGX_JJA3Qc5iaQuc' },
-                { name: 'GorillaTag v1.1.0 New City Map', date: '9/19/2021 - 5:48:26 PM', file: 'https://mega.nz/file/IBYjSZgC#F6gHC-pu3GgEFPHPk5fUPXfCsDzOk3WauSVIdv3R7wA' },
-                { name: 'GorillaTag v1.1.1 Halloween 2021', date: '10/3/2021 - 5:41:21 PM', file: 'https://mega.nz/file/wZB00RaL#4VIopPkrya_fxCqyuhr9tNzZDMXFsTS4xL-ekPLqMNs' },
-                { name: 'GorillaTag v1.1.2', date: '10/13/2021 - 5:26:25 PM', file: 'https://mega.nz/file/xdYDCBpT#yLxJKoHbvuXP93DRbN1f5eHsXSh9e-AlGIGuU8COHSc' },
-                { name: 'GorillaTag v1.1.3 Fall Forest', date: '11/1/2021 - 2:00:58 PM', file: 'https://mega.nz/file/8V41nIhC#2ef3NV359H1IZm8XkNGAkEx-e-1Gx1cdYx-hftImISo' },
-                { name: 'GorillaTag v1.1.4 Fall Costmetics', date: '11/6/2021 - 6:56:28 PM', file: 'https://mega.nz/file/Qc5GkI5A#iE674OolBfdF-4asKMTov31Bn7Pa8i-Y4gm5KRysEe0' },
-                { name: 'GorillaTag v1.1.4.1', date: '11/6/2021 - 7:30:36 PM', file: 'https://mega.nz/file/VBA22LzC#GI9A4YLQZcIOAfGtcsILXi7DSKL0yo9f1f3ohzIFYOw' },
-                { name: 'GorillaTag v1.1.5', date: '11/17/2021 - 11:00:20 PM', file: 'https://mega.nz/file/IYYwWTgA#rVQffA0KDFT_8eirC3xslVpEegqfGtUpSbbGsS5zfms' },
-                { name: 'GorillaTag v1.1.5.1', date: '11/18/2021 - 4:08:23 AM', file: 'https://mega.nz/file/hJ4RiTgZ#QO37nkhk9PLKx-Eq5DwsQ-d9QUiuM5gPO9eCnGj_5mc' },
-                { name: 'GorillaTag v1.1.6', date: '11/18/2021 - 7:13:44 PM', file: 'https://mega.nz/file/RZYx2KjT#NEEUxqUW1xx0tyTRLM8rV7jmtgX_Spf-zgclG9Lt--o' },
-                { name: 'GorillaTag v1.1.7', date: '11/20/2021 - 3:02:06 AM', file: 'https://mega.nz/file/FdRWmTQA#l5iNrQKBGjK4TnGrTk9oYI0-oLHsANu6hM3bQxLtS-o' },
-                { name: 'GorillaTag v1.1.7.1', date: '11/20/2021 - 6:09:13 AM', file: 'https://mega.nz/file/RYZ3mJCZ#__B_Mg5fnMIT-NPoGuTCOHNi0QnbIAEE3v4oCMtpUIY' },
-                { name: 'GorillaTag v1.1.8', date: '11/28/2021 - 3:08:13 AM', file: 'https://mega.nz/file/8YBAVKjA#8013D19trKRpvOjpfgbqQiqCgk9u93Ak7JqMYd2p5es' },
-                { name: 'GorillaTag v1.1.9 Christmas 2021', date: '12/6/2021 - 3:06:04 PM', file: 'https://mega.nz/file/EEBSxBpC#tuE7_OiTDgEGSQuPNvya7a7sXYUwgKnTZJ6QnIYhTzk' },
-                { name: 'GorillaTag v1.1.10 New Hunt Gamemode', date: '12/14/2021 - 5:11:03 PM', file: 'https://mega.nz/file/sdgXkKRb#W00QODiYQ-PQvuSri8OXZiM0Z54hApMPx2TKlvftaB4' },
-                { name: 'GorillaTag v1.1.11 Removal Holiday Lights', date: '1/10/2022 - 3:04:59 PM', file: 'https://mega.nz/file/QRwQTQwR#ms4f0J8CfN5j11ewF5lUi09F4Z5wV_fWb9NRd8ARR2E' },
-                { name: 'GorillaTag v1.1.12-beta SLIPTEST', date: '1/29/2022 - 5:41:58 PM', file: 'https://mega.nz/file/lFJigZ7Z#eMO5sj2PWhPAaOz8zEyhznd33N5ifjFox5kxnLZDdWY' },
-                { name: 'GorillaTag v1.1.12 Cave Song', date: '1/30/2022 - 2:46:20 PM', file: 'https://mega.nz/file/dBA3DLZD#vxOn3TvpWsESRmStBhcZrydaY3dNigB1yM7kQar5pHU' },
-                { name: 'GorillaTag v1.1.12.1', date: '2/4/2022 - 10:05:41 PM', file: 'https://mega.nz/file/EYZUkCZA#0Pj8lDLOXcDoDYIIsK_P4i5q8k9YZ0CIAbIr_SVOxoY' },
-                { name: 'GorillaTag v1.1.13 GTAG ANNIVERSARY', date: '2/4/2022 - 3:50:54 PM', file: 'https://mega.nz/file/8BojzLhI#6bofMv423F318Iq4sXfN9LtpvDJVL9OfY13lf6bLH6Y' },
-                { name: 'GorillaTag v1.1.14 Household Update', date: '2/19/2022 - 4:10:08 PM', file: 'https://mega.nz/file/9IpwVIjT#7JmLARlJ48Qi_sEsPczvVFoe4al-oHvxHFaENdwukjg' },
-                { name: 'GorillaTag v1.1.15 New Mountain Map', date: '3/13/2022 - 5:49:33 PM', file: 'https://mega.nz/file/YIZwULyB#EpVdkpm9kYgk0mbZHqVrtw7l4MLPjSyZ1EtPqQfJYwA' },
-                { name: 'GorillaTag v1.1.16 New Competitive Course', date: '3/16/2022 - 5:10:19 PM', file: 'https://mega.nz/file/VNxBzb5b#AWZxnZGIsoxMYBcOD1lcXZMgB_jT1IGg2mL17dTN5BQ' },
-                { name: 'GorillaTag v1.1.17 Saint Patricks Day Update', date: '3/17/2022 - 11:49:23 AM', file: 'https://mega.nz/file/8VwCHAjZ#eJ5_Cb-y69xyVoNmcsTC2XG-7HxxMAw2bBt-OGcKxis' },
-                { name: 'GorillaTag v1.1.18 Spring Update', date: '3/20/2022 - 2:32:56 PM', file: 'https://mega.nz/file/JEokgKyY#4DE53nNVChSBQ4ZEODo4RO2T7axtSIGPibdtmPWSY0s' },
-                { name: 'GorillaTag v1.1.19', date: '3/24/2022 - 2:59:19 PM', file: 'https://mega.nz/file/hJBk3QYb#q4qypqBHVVmqHD4sfiAV4_Woj40xoP6GG_Jip80zamg' },
-                { name: 'GorillaTag v1.1.19.1', date: '3/24/2022 - 3:16:12 PM', file: 'https://mega.nz/file/RI5CXDhJ#vjE6oozESqDsqFh8_gzXnt_S5PkEY_qxq6SLcbXtRKk' },
-                { name: 'GorillaTag v1.1.20', date: '3/31/2022 - 5:03:41 PM', file: 'https://mega.nz/file/tEQUkQCT#yQCmBCzxCN8tz75B5Q5FuEpX2PRfNnkFollIKDaVODQ' },
-                { name: 'GorillaTag v1.1.20.1', date: '3/31/2022 - 5:18:01 PM', file: 'https://mega.nz/file/dQoFAQCA#t86GcNIK9YIhZX0QAy-sS9qwm8hDMVVRe17SXg9WOrY' },
-                { name: 'GorillaTag v1.1.20.2 April First Early', date: '3/31/2022 - 5:36:56 PM', file: 'https://mega.nz/file/1NI0FTST#EO27x6K2l5oS_GZxpriVuxAxCCxVwqofPRJ5Fc-U95k' },
-                { name: 'GorillaTag v1.1.20.3 Human Tag April 1st', date: '4/1/2022 - 3:22:57 PM', file: 'https://mega.nz/file/ZchiQKZT#OPBaj6dW9f2a2mHR8EnpmTFvtv1Swpl9WZ_pHEf7o80' },
-                { name: 'GorillaTag v1.1.21 April Costmetics', date: '4/9/2022 - 10:17:34 AM', file: 'https://mega.nz/file/hRQA0QRT#CJ_7Hs_Tu-HV1UQv1-14mQoRPtQH7FGFZuP7U_pZGzA' },
-                { name: 'GorillaTag v1.1.21.1', date: '4/9/2022 - 9:25:00 PM', file: 'https://mega.nz/file/0dxjHL5T#VTxeIFTEF-ni32oJarxpb3EW89AkHhKgHsxTunDbZhE' },
-                { name: 'GorillaTag v1.1.22 Rainy Update', date: '4/17/2022 - 2:46:15 PM', file: 'https://mega.nz/file/VY5zgTra#B6GTIjI78Q3LSdqZJo-eRQxyvUcD05JadebpcclMTa8' },
-                { name: 'GorillaTag v1.1.22.1', date: '9/17/2022 - 4:19:21 PM', file: 'https://mega.nz/file/oZRWTACT#FO6o_b7bvqCLLzjXcKmRyyeNEHrZvFR_6SBOUg3mDVE' },
-                { name: 'GorillaTag v1.1.22.2', date: '9/17/2022 - 8:01:45 PM', file: 'https://mega.nz/file/4ApSFYKR#WrY579c6SJAB7gsciOF9AaJ1Qd1B4_LJ4IEvHhy7-do' },
-                { name: 'GorillaTag v1.1.23', date: '4/29/2022 - 4:23:14 PM', file: 'https://mega.nz/file/ocQxjZpS#rr1CmF7wJB-Bhjj6ZJgiJqB3PQNNPGde6SQaLIVy-uI' },
-                { name: 'GorillaTag v1.1.24 Music Update', date: '5/8/2022 - 9:22:27 PM', file: 'https://mega.nz/file/ZZQFDQyR#85Ev0jq3DOLK9kCBtwbBhF_ZuJ5xAg4Ie68uiJTLdIk' },
-                { name: 'GorillaTag v1.1.24.1', date: '5/8/2022 - 10:06:50 PM', file: 'https://mega.nz/file/lVgFDRSa#v6ERX2B4aL-uWUGPVtKEy9F_yJ0WFiUbiqSyE87Zl-Q' },
-                { name: 'GorillaTag v1.1.25 New Quitar', date: '5/14/2022 - 5:11:21 PM', file: 'https://mega.nz/file/sI5FFBiR#JekqVpm3XDxxez0nMoR-t_Qhy1A8qzS3sJP09TxILIE' },
-                { name: 'GorillaTag v1.1.25.1', date: '5/17/2022 - 4:06:48 PM', file: 'https://mega.nz/file/tNA1kbKR#aljbv6_IrfLEQcI_qnJRtIeuThq_YLj3YwM5PxaD0_I' },
-                { name: 'GorillaTag v1.1.25.2', date: '6/10/2022 - 4:34:21 PM', file: 'https://mega.nz/file/pYAWBRIZ#Mlqy3j4paKL9FznlF0Dju3MHdaywIGtCzUTDCE4-cfQ' },
-                { name: 'GorillaTag v1.1.25.3', date: '6/30/2022 - 3:39:04 PM', file: 'https://mega.nz/file/hFIRSB4C#Z8hjo3CaA7WTD2mrs1f-RhpvY7AuibvbMsVeL2FdARE' },
-                { name: 'GorillaTag v1.1.25.4', date: '7/9/2022 - 11:18:26 AM', file: 'https://mega.nz/file/oFAQDIzC#2mXmscw-j2UFRRuaGFytjb4ra-ho5Dn-8FNjuPeq4_8' },
-                { name: 'GorillaTag v1.1.25.5', date: '7/15/2022 - 10:40:59 PM', file: 'https://mega.nz/file/lcpTWbjD#m98nYTcE4yfagkSGj0aAj25kyWOEDiJyWsbvBY6DIiY' },
-                { name: 'GorillaTag v1.1.26', date: '5/29/2022 - 4:38:38 PM', file: 'https://mega.nz/file/BdBjRITK#YQB5VKdy8YnhjuRbsLy-eIMqouWOSIgnBP3xelia92Q' },
-                { name: 'GorillaTag v1.1.26.1 Summer Update', date: '7/18/2022 - 11:29:19 AM', file: 'https://mega.nz/file/NVIw1ASK#cNdaO2iDrZ_9je6zgkkbpG-tYMMgNxFeT04HYa0dkEY' },
-                { name: 'GorillaTag v1.1.26.2', date: '8/2/2022 - 1:56:15 PM', file: 'https://mega.nz/file/1QJD0SCJ#P_LYWFIq-sI8Zo8Ej7tHc9pLn82xFBjDUZ-uJtT56wk' },
-                { name: 'GorillaTag v1.1.26.3', date: '8/14/2022 - 7:56:32 AM', file: 'https://mega.nz/file/BI5CDTCQ#ajltmMvxFr2I5QBvsIQEyAJR3l0z14-hSM8ooJPHNhM' },
-                { name: 'GorillaTag v1.1.26.4', date: '8/16/2022 - 5:49:12 PM', file: 'https://mega.nz/file/oZQi2JAL#EOAMJS8vaYXWX4b09myZwIiNc46GZ45BMOu9Sxuo1pE' },
-                { name: 'GorillaTag v1.1.26.5', date: '8/18/2022 - 11:15:37 AM', file: 'https://mega.nz/file/9EwSVaDQ#Y1cVpqlzv_p0r6XjP_Zv71gR0o2PUD_XMH2KBLZf-PM' },
-                { name: 'GorillaTag v1.1.27 New Paintbrawl Gamemode', date: '9/22/2022 - 6:01:47 PM', file: 'https://mega.nz/file/5cg1iaoA#9oUZI1b5RvGmojCNo4Kq3szy0yzRe-JuR78S5oKYysY' },
-                { name: 'GorillaTag v1.1.27.1 New Holdible System', date: '9/22/2022 - 8:27:20 PM', file: 'https://mega.nz/file/YFxnARQD#2edEbQpKU-fUXqwONIKxqowmIkwy7SSflpB6SZcyv4I' },
-                { name: 'GorillaTag v1.1.27.2', date: '9/22/2022 - 9:58:59 PM', file: 'https://mega.nz/file/BNInQRhC#hBxbfE0b1c089pFDUBC-kvSFKju9KIe6yZ_H9SGW1dc' },
-                { name: 'GorillaTag v1.1.27.3', date: '9/22/2022 - 11:29:19 PM', file: 'https://mega.nz/file/RY5m1L6S#I1bQ6BK5p9edDKP_ssX6WjcBonjTZ27VlKk3PhzMDS4' },
-                { name: 'GorillaTag v1.1.27.4', date: '9/26/2022 - 3:21:36 AM', file: 'https://mega.nz/file/kUxj1A7T#zMizB-8Q8EUci3x6FtrEWD_-r-N5TJ7t4NI04lS-_QQ' },
-                { name: 'GorillaTag v1.1.27.5 Halloween 2022', date: '10/20/2022 - 8:52:03 PM', file: 'https://mega.nz/file/1UZXQDbA#DNcwrko9YE6bu2uZfcwj-i2I3PFPgN_5COf8qoTljhA' },
-                { name: 'GorillaTag v1.1.27.6', date: '10/21/2022 - 3:43:41 PM', file: 'https://mega.nz/file/BNx2yLDa#ub1FDxvV3F_9wCFgDuNG8_oU4iTTJzMV-Mm8dEWfIYw' },
-                { name: 'GorillaTag v1.1.29 Halloween Flashback', date: '10/28/2022 - 2:55:27 PM', file: 'https://mega.nz/file/NFZUWI5K#kVPYubFGk_VTgHAu1cEXWJjz1TO7FCTrgohTgf11PZo' },
-                { name: 'GorillaTag v1.1.29.1', date: '10/28/2022 - 4:06:32 PM', file: 'https://mega.nz/file/scYTmJJD#Pqw_YEZyLXPfAz13bbD72n__3PSaCPfHj3m5cjBz3iI' },
-                { name: 'GorillaTag v1.1.30 Privacy Policy', date: '11/5/2022 - 4:50:30 PM', file: 'https://mega.nz/file/4J42VA4B#30LZOikzebSW_ItZ57zlFtD5GTi1gzOySaI6Zr9x6vM' },
-                { name: 'GorillaTag v1.1.31 Fall Update', date: '11/11/2022 - 12:13:40 PM', file: 'https://mega.nz/file/cRJFyIDJ#_taP8DyahnYQy7xoU90xuRap5WVfm2gZfo_Bbfo7VOg' },
-                { name: 'GorillaTag v1.1.31.1', date: '11/11/2022 - 4:27:12 PM', file: 'https://mega.nz/file/JJA0wJ4S#SNorfVjwZgm_SLAHy_mna3aFbFB5aeYG8JUbWh7kZKc' },
-                { name: 'GorillaTag v1.1.32 Fall Flashback', date: '11/23/2022 - 10:47:07 AM', file: 'https://mega.nz/file/tZoS2RhQ#6BJadrfZdN59XmEwO9puP996HRtk_TBGevRDfLjYIfw' },
-                { name: 'GorillaTag v1.1.33', date: '12/8/2022 - 5:07:04 PM', file: 'https://mega.nz/file/FYQkFKLY#qscebMHJZPYWDQf-1LAMBY6u2ZuWB0_oSONFjYOEdkQ' },
-                { name: 'GorillaTag v1.1.33.1 oficial lauch + New Clouds Map', date: '12/15/2022 - 5:43:22 PM', file: 'https://mega.nz/file/ZFgC1D5T#NSKx_Q1ploy-T0t1b8kS00NAtf8Hj4MD2KNVg0HI8EY' },
-                { name: 'GorillaTag v1.1.33.2', date: '12/18/2022 - 4:25:26 PM', file: 'https://mega.nz/file/0BgDxZoI#dJypx8y-F596vz_s_4ZrpcByXnDgCU1mD3SYeFiroiA' },
-                { name: 'GorillaTag v1.1.34 Christmas Update 2022', date: '12/22/2022 - 5:32:07 PM', file: 'https://mega.nz/file/pRI3TZgZ#cQPQBds3d8CCp7eRQFusYRQjtGApv6vCWNXyvqmE4LA' },
-                { name: 'GorillaTag v1.1.34.1', date: '12/24/2022 - 12:07:06 AM', file: 'https://mega.nz/file/pY5GnQjS#8enfZtCOM5LWjv3VipE0cP4THOoyxPeWdEa0DxNB1Vc' },
-                { name: 'GorillaTag v1.1.34.2', date: '12/27/2022 - 2:20:34 AM', file: 'https://mega.nz/file/hNYHiY4A#IIRePNK5vVbYnf3opji9FXZ7mH9X6SXoQjf0yygnM4E' },
-                { name: 'GorillaTag v1.1.35', date: '1/11/2023 - 2:21:47 PM', file: 'https://mega.nz/file/tR5URIzS#YRAb8EFfPpDvQRPRGgvAcy-b1UHbW_-ndd1ilA9AS9U' },
-                { name: 'GorillaTag v1.1.36', date: '1/27/2023 - 11:49:02 AM', file: 'https://mega.nz/file/FQAVmJKa#4rQE4MF879ZoDsD8nMv3xcy3Pq4bcD-_Awvg6OLa4ko' },
-                { name: 'GorillaTag v1.1.37', date: '2/10/2023 - 12:27:15 PM', file: 'https://mega.nz/file/IVQVhIRQ#kBgHjrqnUL4R2p6fPxcm7TWT2ib9LaYdCRgfJLQTo-M' },
-                { name: 'GorillaTag v1.1.37.1', date: '2/10/2023 - 3:12:12 PM', file: 'https://mega.nz/file/UBw3hIYS#_-X-JV0NK8MWr5_mOtGzCY90Waq5p1hFQvEp7XwonDk' },
-                { name: 'GorillaTag v1.1.38', date: '2/23/2023 - 7:09:01 PM', file: 'https://mega.nz/file/cVQG3AiK#Bkj2Mxhm5zQ_7GMBDnIS6o7rlkbW7GaqKVwpR94nUu4' },
-                { name: 'GorillaTag v1.1.39', date: '3/6/2023 - 5:32:11 PM', file: 'https://mega.nz/file/RNA1ALAJ#hsgFCNC0aXahVnEpsujxmhWvf9KKWg1evnE424wVRgI' },
-                { name: 'GorillaTag v1.1.39.1', date: '3/11/2023 - 1:19:44 AM', file: 'https://mega.nz/file/4QxFSLyC#0DUYKZXcV2wyEY9bZAKPdeZPGIZppkUc6lvefRhmzj8' },
-                { name: 'GorillaTag v1.1.40', date: '3/24/2023 - 2:00:53 PM', file: 'https://mega.nz/file/xIYAxKaB#B9ZRoYO5NbXrxxjlELE21kMD4XHn-PbHW_boFRRsc6M' },
-                { name: 'GorillaTag v1.1.41', date: '3/30/2023 - 9:50:23 PM', file: 'https://mega.nz/file/6wJgEQhJ#KjOeUz6AwqvB70vAKGhiWiPuyI4vTilvTM1YTPjUdmQ' },
-                { name: 'GorillaTag v1.1.42', date: '4/4/2023 - 4:26:41 PM', file: 'https://mega.nz/file/vpZxzDAY#4T3z-ulkRUVWnjg937OxlAUGK-bWbrIQdcVEGiQSLCg' },
-                { name: 'GorillaTag v1.1.43', date: '4/21/2023 - 12:06:17 AM', file: 'https://mega.nz/file/DhoWGbCR#rErwY9djmFCnw0QRWk2oo0BkuyGbPi15lMeYzDi-1OY' },
-                { name: 'GorillaTag v1.1.44', date: '4/21/2023 - 4:21:10 PM', file: 'https://mega.nz/file/79QykCBS#SPKAPNG9g20Y4IgiNU1909jlEZ0HEPp2K32Q7GeVipM' },
-                { name: 'GorillaTag v1.1.44.1', date: '4/21/2023 - 5:09:12 PM', file: 'https://mega.nz/file/W0ZwwDIZ#nbsFKNU7flbAspyD_8Ctv7gx0T8Ryp6FMHTroiU4Lhg' },
-                { name: 'GorillaTag v1.1.45', date: '5/4/2023 - 7:48:18 PM', file: 'https://mega.nz/file/2s5B2DbA#-rgPkEqwYAzFzgWKT1ENG3opVxmp0kAfuJSHpvzbLqE' },
-                { name: 'GorillaTag v1.1.45.1', date: '5/6/2023 - 3:37:00 PM', file: 'https://mega.nz/file/WoZ0gKpT#diIEXFGToxWyf9KDTyylughqYlYqb-4EoYSmxDeIGq8' },
-                { name: 'GorillaTag v1.1.46', date: '5/26/2023 - 11:22:59 AM', file: 'https://mega.nz/file/fpAziC4R#4R38QqADXpMJJDlfftXGTuf5SNih9nP-viOz9EaBfrQ' },
-                { name: 'GorillaTag v1.1.47', date: '6/1/2023 - 8:00:12 PM', file: 'https://mega.nz/file/64ZwlZwB#y2eoV5g51zZ3rHCHwmgJr6_YWzhkBo-7CBmUB-furLE' },
-                { name: 'GorillaTag v1.1.48', date: '6/8/2023 - 11:43:25 AM', file: 'https://mega.nz/file/DxZVjZKA#aEYtLTgPXWx2VKe5AFzJN6VwHd9GLMZkAnawyo3gbQ0' },
-                { name: 'GorillaTag v1.1.49', date: '6/15/2023 - 1:33:27 PM', file: 'https://mega.nz/file/r5xhnQ5S#Yx7LbK5xAKFITdnti1ZK7Ijkj4cNyZw1GuzK8Zg_XnE' },
-                { name: 'GorillaTag v1.1.50', date: '6/20/2023, 8:30:16 PM', file: 'https://mega.nz/file/bp5FUBgR#ROpiKWEyfz4vPEhT0KNkEHx0HkT5Gi9Tng3pjHlr09Y' }
+  <p id="download-count" style="margin-top:10px; font-weight:bold; color:#ffd700;">
+    Avaliable Versions: 0
+  </p>
 
-        ];
+  <table class="versions-table" id="normal-versions">
+    <thead>
+      <tr>
+        <th>Version</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Size</th>
+        <th>Download</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>gorilla124.apk</td>
+        <td>January 28, 2020</td>
+        <td>?</td>
+        <td>49.6 MB</td>
+        <td><a href="https://mega.nz/file/1MokHYZY#j4Kfbb2YYN53Rw3ky5IQvHa38bExJ91ROe5jA-IgTDc" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaLocoFeb20.apk</td>
+        <td>February 20, 2020</td>
+        <td>?</td>
+        <td>53.4 MB</td>
+        <td><a href="https://mega.nz/file/tcRFkJJZ#z-oYBt4bndTG2dp7bWA4FCFHPcHyH8BYi6FKZaRnI_I" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTagMay25Finalv2.apk</td>
+        <td>May 25, 2020</td>
+        <td>?</td>
+        <td>48.7 MB</td>
+        <td><a href="https://mega.nz/file/NEowWKZA#IYBatdPsYvFf9nFLF8UbaYfShahU5JjlPHNIe39E98Y" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTagMay26Final.apk</td>
+        <td>May 26, 2020</td>
+        <td>?</td>
+        <td>48.7 MB</td>
+        <td><a href="https://mega.nz/file/9V5hWBJS#HjRAa1RrQfsTGzbsncdmLSC0Xrn_oX1WjeMflU4lO6M" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTagMay27.apk</td>
+        <td>May 27, 2020</td>
+        <td>?</td>
+        <td>43.7 MB</td>
+        <td><a href="https://mega.nz/file/IcIhlLKK#WhYImjt0ZJVNC0U2rUvYftqSS5bmixtUqqxE_X8CJHU" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTagMay27Final.apk</td>
+        <td>May 27, 2020</td>
+        <td>?</td>
+        <td>44.8 MB</td>
+        <td><a href="https://mega.nz/file/tJR2HTbA#fV17x0mPtwdnoB3xd7jJYpJlRpxPKpCnnWJw1QmRuqc" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTagMay28Final.apk</td>
+        <td>May 28, 2020</td>
+        <td>?</td>
+        <td>56.7 MB</td>
+        <td><a href="https://mega.nz/file/kR5iWI6b#qLxzkp_XKT4HoKNw-f0pYqTlronNrwiSKKDS5cjZ47o" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTagMay29Early.apk</td>
+        <td>May 29, 2020</td>
+        <td>?</td>
+        <td>68.1 MB</td>
+        <td><a href="https://mega.nz/file/5RpSXR5Y#RZWqYcgeGgPtEK3oYdveOZgz3qIKyfZOIISi9fKcnZg" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTagMay30Collision.apk</td>
+        <td>May 30, 2020</td>
+        <td>?</td>
+        <td>47.7 MB</td>
+        <td><a href="https://mega.nz/file/dEwEVCxD#i8JiH85qnoI3tpGtow4Jl9zZbI3Zp_7LzCrJ2NL_KYg" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTagMay30CollisionHotPatch2.apk</td>
+        <td>May 30, 2020</td>
+        <td>?</td>
+        <td>47.7 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1FdjN6jHD8RSQ5s4ScRpmQgeOpXkAkcSq" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTagMay30InfectionUpdateFingersCrossed.apk</td>
+        <td>May 30, 2020</td>
+        <td>?</td>
+        <td>47.6 MB</td>
+        <td><a href="https://mega.nz/file/EdZVhSqZ#M47nHyws6Ejlb9rgmPS9O8ucxazM5I5-ZRJzsLp_1a8" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTagMay30InfectionBreakFix.apk</td>
+        <td>May 30, 2020</td>
+        <td>?</td>
+        <td>47.7 MB</td>
+        <td><a href="https://mega.nz/file/VRRQWLqZ#pMDrHBPbfjqyYCFTRG4zcDXnC87G_Dmi2X5YKckzAog" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTagMay31Final.apk</td>
+        <td>May 31, 2020</td>
+        <td>?</td>
+        <td>41.9 MB</td>
+        <td><a href="https://mega.nz/file/AQgniTCC#x_mM8M2CoStJB0Ozq7tSvrLHip13wXtCMF5i5sm_uvo" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTagJune1Live.apk</td>
+        <td>June 1, 2020</td>
+        <td>?</td>
+        <td>41.9 MB</td>
+        <td><a href="https://mega.nz/file/oJwk3YIZ#5z7XYuMHcFo7GYdJsSVejEfdVAuUTT98HaFQxKFsamc" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTagJune5.apk</td>
+        <td>June 5, 2020</td>
+        <td>?</td>
+        <td>42.9 MB</td>
+        <td><a href="https://mega.nz/file/8UQB0JhI#_tjGpQDYkrimG_mUE7WSYhJc4EGenHGI8rl8Kna8JvI" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTagJune6.apk</td>
+        <td>June 6, 2020</td>
+        <td>?</td>
+        <td>40.5 MB</td>
+        <td><a href="https://mega.nz/file/AMgwnCBT#9KmYh1Svkyi4aTvR-pdwjjZzRsARQ_pL6tigba2m1mo" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTagJune7HotFix.apk</td>
+        <td>June 7, 2020</td>
+        <td>?</td>
+        <td>40.5 MB</td>
+        <td><a href="https://mega.nz/file/JcZDxYCZ#RbZz9eWNisGb3BWjRQEI-fMpQQpPLr3ADBP3hDeFn0A" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTagCaveTestJune9.apk</td>
+        <td>June 9, 2020</td>
+        <td>?</td>
+        <td>45.0 MB</td>
+        <td><a href="https://mega.nz/file/5ABi2ZLA#qAojpe4ltnDNRuWILFvi1AMfi1ErlNwoHyKdUHc000M" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTagCaveJune9.apk</td>
+        <td>June 9, 2020</td>
+        <td>?</td>
+        <td>44.6 MB</td>
+        <td><a href="https://mega.nz/file/UIJyhRYa#dr8abXAErPhdBRmtzA3WONdkXXp9fVC-ZpjDnhdFB1s" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>TransparentBlue.apk</td>
+        <td>June 11, 2020</td>
+        <td>?</td>
+        <td>43.4 MB</td>
+        <td><a href="https://mega.nz/file/4IIWGbBI#K0VS-awfXfJOGGtbujMWvjGLBVRSwq9hdnjJEbJRrxY" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>Crusher.apk</td>
+        <td>June 12, 2020</td>
+        <td>?</td>
+        <td>44.1 MB</td>
+        <td><a href="https://mega.nz/file/oFxjFDxI#fQszyA09SaARUcm6ecmW1Mo_lN_iAojTDzYwf0zaNG8" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>MessagesOptimize.apk</td>
+        <td>June 12, 2020</td>
+        <td>?</td>
+        <td>43.5 MB</td>
+        <td><a href="https://mega.nz/file/FRAkhbZR#ExAn1-K-_slE6eI2jp66Rfzh45um_WjO051iv14ydi0" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>ServerIsKill.apk</td>
+        <td>June 12, 2020</td>
+        <td>?</td>
+        <td>43.4 MB</td>
+        <td><a href="https://mega.nz/file/dJZXWDxC#49BJzXdosm19RKjK3JELH_jIHMijp4AwJB2kuhxUJIQ" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>CTFProto.apk</td>
+        <td>June 14, 2020</td>
+        <td>?</td>
+        <td>47.1 MB</td>
+        <td><a href="https://mega.nz/file/tVhBUIqb#2uXMHXmHJglUg5wy7nVU4DP6DgZUGNYHMVaRv-2Mv0w" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>CTFProtoBetter.apk</td>
+        <td>June 14, 2020</td>
+        <td>?</td>
+        <td>47.1 MB</td>
+        <td><a href="https://mega.nz/file/dJRgUCyD#PL0B9Aq4mH2RKLAR6LoAmqXjXls-fwc2A53uj-ZX2Bg" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>CTFProtoBetterer.apk</td>
+        <td>June 14, 2020</td>
+        <td>?</td>
+        <td>47.1 MB</td>
+        <td><a href="https://mega.nz/file/0Z4gwZaY#Xe8H6EkOURHDcggu82BkFbsk2SsdyGBb6SF8QoNqEzI" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>CTFProtoNapTime.apk</td>
+        <td>June 15, 2020</td>
+        <td>?</td>
+        <td>47.0 MB</td>
+        <td><a href="https://mega.nz/file/gZJkGayR#Uuw7i5DJGpzrxRaSq3MII08X5aVGWSJlyBylxSphzPY" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>CTFProtoSleepTime.apk</td>
+        <td>June 15, 2020</td>
+        <td>?</td>
+        <td>47.0 MB</td>
+        <td><a href="https://mega.nz/file/NBQxWKrb#Tc-ASG_OtOZBk0FM7Lw82hnOE4uwfnwh1EoZiK3nvGc" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>CTFProtoAlive.apk</td>
+        <td>June 16, 2020</td>
+        <td>?</td>
+        <td>47.7 MB</td>
+        <td><a href="https://mega.nz/file/AUohBI5Y#MaQKR6iYOW-UoDRKtYfeOlDp4OstvvePBmp_0A70tPs" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>CTFProtoDead.apk</td>
+        <td>June 16, 2020</td>
+        <td>?</td>
+        <td>52.6 MB</td>
+        <td><a href="https://mega.nz/file/wcZBkZQa#ZX42CTcZuDeoePRr1CswIC2DIZcP8pU6YZacN1kXzZ0" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>CTFProtoSpirit.apk</td>
+        <td>June 17, 2020</td>
+        <td>?</td>
+        <td>47.7 MB</td>
+        <td><a href="https://mega.nz/file/QQRCjDxb#YiMapvmq7kgifcCFFwczt3syUFqx8HFx1Shx0afMSJk" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>Lobby.apk</td>
+        <td>June 23, 2020</td>
+        <td>?</td>
+        <td>41.8 MB</td>
+        <td><a href="https://mega.nz/file/dEJUHYzI#lY-IYX5XzZbT4fgCSnCmPLnj2XMpE-cnuwdLb1AVnxs" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>ColorPick.apk</td>
+        <td>June 29, 2020</td>
+        <td>?</td>
+        <td>41.8 MB</td>
+        <td><a href="https://mega.nz/file/kMQxCADC#PGIYCST740K97vsBcBza7Ji9ui7gK8Ma8Eb_blrFyDM" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>PVE.apk</td>
+        <td>July 16, 2020</td>
+        <td>?</td>
+        <td>44.5 MB</td>
+        <td><a href="https://mega.nz/file/ldQ12SKb#8Nb8-N1UzsBVbqcEjKmR47blnM3b1hkFeEGAQqa0d9c" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>PVEFix.apk</td>
+        <td>July 16, 2020</td>
+        <td>?</td>
+        <td>44.5 MB</td>
+        <td><a href="https://mega.nz/file/RUQWzbra#7Rc_FEBQN13gBlW8iz3tjGkxJVjCxW00SJjmr0bCDus" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>TutorialName.apk</td>
+        <td>August 4, 2020</td>
+        <td>?</td>
+        <td>45.9 MB</td>
+        <td><a href="https://mega.nz/file/JFxlVBiK#j_zO-uqPn52lKy09yJshE-7OSmjDFr1cL9DEaJRkAbk" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>Fingers.apk</td>
+        <td>August 7, 2020</td>
+        <td>?</td>
+        <td>45.9 MB</td>
+        <td><a href="https://mega.nz/file/URhDBaAI#gDm-axOt-W26dsGOd7zTu83fY4g7NMhMctFfiwbp72A" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>Cave.apk</td>
+        <td>August 8, 2020</td>
+        <td>?</td>
+        <td>42.0 MB</td>
+        <td><a href="https://mega.nz/file/NIp13CzB#MFYsnjnbcUhavHYGHDMpyI4A8aiEJiGowM73Q9PdT8Q" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>WowGraphics.apk</td>
+        <td>August 13, 2020</td>
+        <td>?</td>
+        <td>57.1 MB</td>
+        <td><a href="https://mega.nz/file/sZxTnJCD#zxp1sg2YBLmLAsu_akPkpiy-ByeDoOhiMLtzhp0AVEE" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>TagRumble.apk</td>
+        <td>August 21, 2020</td>
+        <td>?</td>
+        <td>39.5 MB</td>
+        <td><a href="https://mega.nz/file/AMQSlTTC#hZKfEQqnC9UgBcgcLhUegPyYaD87QTzi70AyAON-loc" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>ScoreBoard.apk</td>
+        <td>August 29, 2020</td>
+        <td>?</td>
+        <td>39.5 MB</td>
+        <td><a href="https://mega.nz/file/xJZFiDoR#NxVl5TPc6BHZ_dPntZYoKhmTLnmqSoSW85kZsEPkotk" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>XP.apk</td>
+        <td>September 6, 2020</td>
+        <td>?</td>
+        <td>39.9 MB</td>
+        <td><a href="https://mega.nz/file/dQ5GlQ7L#8_WHUmbXrVTtgp1CGA82JqB5goISV70DvbZ85RMr7po" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>XPFix.apk</td>
+        <td>September 7, 2020</td>
+        <td>?</td>
+        <td>39.9 MB</td>
+        <td><a href="https://mega.nz/file/dABUmLqa#wKmoWUBGod_n00ct1kKUHb23ew5tVe9xw12MXTE_5N0" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>1v1UntestedLol.apk</td>
+        <td>September 19, 2020</td>
+        <td>?</td>
+        <td>46.6 MB</td>
+        <td><a href="https://mega.nz/file/1Yh0xLCS#FIKnB4YO6Q6MCT_5VbVNUL7tsZbWE9upfKUvsR8Z5IU" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>BodyTag.apk</td>
+        <td>September 26, 2020</td>
+        <td>?</td>
+        <td>46.6 MB</td>
+        <td><a href="https://mega.nz/file/BVZjWaRC#OKx0DmL8N2TYsDt5Vag_-RmcfP0KMDrkXhMm3Ey3RfM" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>BodyTagPerf.apk</td>
+        <td>September 27, 2020</td>
+        <td>?</td>
+        <td>46.6 MB</td>
+        <td><a href="https://mega.nz/file/9FxxSDba#zOVkczILrdWn9xfCWFT-48fX4mkxWaURsYelQMieftk" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>NewMovement.apk</td>
+        <td>October 18, 2020</td>
+        <td>?</td>
+        <td>46.9 MB</td>
+        <td><a href="https://mega.nz/file/cFBDlaaB#KqXD88Wm92Uqroar6MQN_dgYz-arbdX7hrVOekrRjZE" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>StickTurnFix.apk</td>
+        <td>October 19, 2020</td>
+        <td>?</td>
+        <td>46.9 MB</td>
+        <td><a href="https://mega.nz/file/dQ5GlQ7L#8_WHUmbXrVTtgp1CGA82JqB5goISV70DvbZ85RMr7po" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>PitForest.apk</td>
+        <td>November 12, 2020</td>
+        <td>?</td>
+        <td>77.2 MB</td>
+        <td><a href="https://mega.nz/file/QU5wXQiY#4hVc4vk3A04t9s5nSwlDS-eyapoQM8GyJytAjGTKnJU" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>PreAlpha.apk</td>
+        <td>November 17, 2020</td>
+        <td>?</td>
+        <td>74.1 MB</td>
+        <td><a href="https://mega.nz/file/sNwmGLSa#RXLTxv1ktUfigzOM1mSbuxAcYasWJRYEiuWkmGEp_jU" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>PreAlpha1dot1.apk</td>
+        <td>November 22, 2020</td>
+        <td>?</td>
+        <td>64.1 MB</td>
+        <td><a href="https://mega.nz/file/9I4AxQqZ#ucWWZ644U0w4d8RJrrRdiCTknnQaEtrTT7E168cwt1Q" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>PreAlpha1dot2.apk</td>
+        <td>November 25, 2020</td>
+        <td>?</td>
+        <td>64.1 MB</td>
+        <td><a href="https://mega.nz/file/lBoC2QjA#qRoY2jI7Rl5uJLpwaaKvh8Z_o9lZ4EAm6nIqrlMSAew" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>PreAlpha1dot4.apk</td>
+        <td>December 19, 2020</td>
+        <td>?</td>
+        <td>60.3 MB</td>
+        <td><a href="https://mega.nz/file/IJ42TB4Z#4a3rxcJsRmCy7Pf0MHT0rK6ijuRJR8cY7nZu7DmslmM" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>PreAlpha1dot5.apk</td>
+        <td>December 19, 2020</td>
+        <td>?</td>
+        <td>60.9 MB</td>
+        <td><a href="https://mega.nz/file/UV4nkSqA#0ueWvuL_iAHGn5IYWWtRlc0Qzy0lN4YIkTLE0ARzkzM" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>PreAlpha1dot5v2.apk</td>
+        <td>December 19, 2020</td>
+        <td>?</td>
+        <td>73.3 MB</td>
+        <td><a href="https://mega.nz/file/oNJV1AAD#S6VHeT9dUQWeImSgAP6EZPMSWr4MsYnv2w-t6qSFlTE" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>PreAlpha1dot5v3HotFix.apk</td>
+        <td>December 24, 2020</td>
+        <td>?</td>
+        <td>60.9 MB</td>
+        <td><a href="https://mega.nz/file/YRB2RS4A#p_GRRm4yphX5K5HLa0j_ZaKYJqVy8-e3mu1w5M3rwT4" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>PreAlpha1dot6.apk</td>
+        <td>December 29, 2020</td>
+        <td>?</td>
+        <td>60.3 MB</td>
+        <td><a href="https://mega.nz/file/QMg0EYYY#N6uAV7hgPS6fFxWK1KWJjKnpPridBjUyypT3lkV8cXo" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>PreAlpha1dot7.apk</td>
+        <td>February 7, 2021</td>
+        <td>?</td>
+        <td>61.5 MB</td>
+        <td><a href="https://mega.nz/file/AEBUFKxQ#R7JtQs_ptAlklUxQ4DCGBhbipK91hz9i0m5aSgAWpMA" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>PreAlpha1dot8.apk</td>
+        <td>February 4, 2021</td>
+        <td>?</td>
+        <td>53.5 MB</td>
+        <td><a href="https://mega.nz/file/ABIzTYKK#-L9g7SK5UxQa1m4PjnAIFio97V4S7voUhVHZ2KTih90" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <tr>
+  <td>GorillaTag v1.0.0 Launch Day.apk</td>
+  <td>February 4, 2021</td>
+  <td>5:19:41 AM</td>
+  <td>60.9 MB</td>
+  <td><a href="https://mega.nz/file/IQwABZIR#-9B6WXq7RBjnHiIGfzp4h8EWaq-cyPeVr0v2BwmlwqI" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.0.1.apk</td>
+  <td>February 7, 2021</td>
+  <td>2:52:27 AM</td>
+  <td>66.8 MB</td>
+  <td><a href="https://mega.nz/file/sE4nyZja#wk2cUJgDM8A0RWVA_m41iTL6_zuFJzYkUG2ITodyW-Q" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.0.2 New Cave Map.apk</td>
+  <td>March 12, 2021</td>
+  <td>5:44:48 PM</td>
+  <td>69.8 MB</td>
+  <td><a href="https://mega.nz/file/1YAm0DaA#3LoJ-zUhxBWNrcLclUL61JEH-jqcegfYgEvNLcVuh3E" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.0.3 New Hat Room.apk</td>
+  <td>March 16, 2021</td>
+  <td>10:51:38 PM</td>
+  <td>74.6 MB</td>
+  <td><a href="https://mega.nz/file/IUATWDwa#V9tJn7kzkS2oNfeYvwbsFt_w7qmQiOZLtwCiMzJcE6I" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.0.4 Slippery Walls.apk</td>
+  <td>April 1, 2021</td>
+  <td>12:14:35 AM</td>
+  <td>63.2 MB</td>
+  <td><a href="https://mega.nz/file/ZRIU3DbC#YWunVu7bJEo5D1JICk2myf-_KtoXgv_NKyyYFO17UUs" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.0.5 New Canyons Map.apk</td>
+  <td>April 17, 2021</td>
+  <td>12:23:22 PM</td>
+  <td>84.1 MB</td>
+  <td><a href="https://mega.nz/file/sJJDCIpI#gAoxFjDojVBd2hF9PzBVBm2I4f4uoTenuezL93Eavas" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.0.5.1.apk</td>
+  <td>April 17, 2021</td>
+  <td>1:26:12 PM</td>
+  <td>84.1 MB</td>
+  <td><a href="https://mega.nz/file/1ZplQAJR#7qQG5N3i5iVMILG-lF9_Weq4B3Vf9B8auopv4aShn5E" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.0.6.apk</td>
+  <td>May 2, 2021</td>
+  <td>6:28:08 AM</td>
+  <td>66.3 MB</td>
+  <td><a href="https://mega.nz/file/YUhRAD4L#VydCikRlERDSLNtApUohr0xgiNjUKAf7QG1SDXN3Lvs" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.0.7.apk</td>
+  <td>May 23, 2021</td>
+  <td>4:06:27 PM</td>
+  <td>95.8 MB</td>
+  <td><a href="https://mega.nz/file/wcw3ADrb#gcLJClsImC6Ge07Hd8hOVuqiQqhW7Xd4kEZd9Z4zBhw" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.0.8 New Message Board.apk</td>
+  <td>June 11, 2021</td>
+  <td>3:43:27 AM</td>
+  <td>96.0 MB</td>
+  <td><a href="https://mega.nz/file/IRoXiYyT#VtF2YGu_kerDIINtXTe8cWm5IJGU6JSBsQDiRsqhBFM" class="download-btn">Download</a></td>
+</tr>
 
-        const tableBody = document.querySelector('#versions-table tbody');
+  <td>GorillaTag v1.0.9 No More Neon Colors.apk</td>
+  <td>June 28, 2021</td>
+  <td>9:20:42 PM</td>
+  <td>99.3 MB</td>
+  <td><a href="https://mega.nz/file/4RRh3JBS#aGZHsEd7esWWLTW-Gq9hOf3H9GDprwtPzguaMHjdfI8" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.0.10 No Changes.apk</td>
+  <td>July 12, 2021</td>
+  <td>4:37:37 AM</td>
+  <td>95.5 MB</td>
+  <td><a href="https://mega.nz/file/0YBSkKbC#ggNFGHnvX1FnjvjjN1GjlZJIfyAx_3rxwtBR7i90Lts" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.0.11 Forest Song.apk</td>
+  <td>August 2, 2021</td>
+  <td>5:28:58 AM</td>
+  <td>82.0 MB</td>
+  <td><a href="https://mega.nz/file/sNBEGSRL#GYgSpgZmi--Pgw5quPyKzi5_Pm_CGX_JJA3Qc5iaQuc" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.0 New City Map.apk</td>
+  <td>September 19, 2021</td>
+  <td>5:48:26 PM</td>
+  <td>95.9 MB</td>
+  <td><a href="https://mega.nz/file/IBYjSZgC#F6gHC-pu3GgEFPHPk5fUPXfCsDzOk3WauSVIdv3R7wA" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.1 Halloween 2021.apk</td>
+  <td>October 3, 2021</td>
+  <td>5:41:21 PM</td>
+  <td>100.1 MB</td>
+  <td><a href="https://mega.nz/file/wZB00RaL#4VIopPkrya_fxCqyuhr9tNzZDMXFsTS4xL-ekPLqMNs" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.2.apk</td>
+  <td>October 13, 2021</td>
+  <td>5:26:25 PM</td>
+  <td>101.6 MB</td>
+  <td><a href="https://mega.nz/file/xdYDCBpT#yLxJKoHbvuXP93DRbN1f5eHsXSh9e-AlGIGuU8COHSc" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.3 Fall Forest.apk</td>
+  <td>November 1, 2021</td>
+  <td>2:00:58 PM</td>
+  <td>104.0 MB</td>
+  <td><a href="https://mega.nz/file/8V41nIhC#2ef3NV359H1IZm8XkNGAkEx-e-1Gx1cdYx-hftImISo" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.4 Fall Costmetics.apk</td>
+  <td>November 6, 2021</td>
+  <td>6:56:28 PM</td>
+  <td>106.5 MB</td>
+  <td><a href="https://mega.nz/file/Qc5GkI5A#iE674OolBfdF-4asKMTov31Bn7Pa8i-Y4gm5KRysEe0" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.4.1.apk</td>
+  <td>November 6, 2021</td>
+  <td>7:30:36 PM</td>
+  <td>106.4 MB</td>
+  <td><a href="https://mega.nz/file/VBA22LzC#GI9A4YLQZcIOAfGtcsILXi7DSKL0yo9f1f3ohzIFYOw" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.5.apk</td>
+  <td>November 17, 2021</td>
+  <td>11:00:20 PM</td>
+  <td>117.3 MB</td>
+  <td><a href="https://mega.nz/file/IYYwWTgA#rVQffA0KDFT_8eirC3xslVpEegqfGtUpSbbGsS5zfms" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.5.1.apk</td>
+  <td>November 18, 2021</td>
+  <td>4:08:23 AM</td>
+  <td>117.3 MB</td>
+  <td><a href="https://mega.nz/file/hJ4RiTgZ#QO37nkhk9PLKx-Eq5DwsQ-d9QUiuM5gPO9eCnGj_5mc" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.6.apk</td>
+  <td>November 18, 2021</td>
+  <td>7:13:44 PM</td>
+  <td>117.3 MB</td>
+  <td><a href="https://mega.nz/file/RZYx2KjT#NEEUxqUW1xx0tyTRLM8rV7jmtgX_Spf-zgclG9Lt--o" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.7.apk</td>
+  <td>November 20, 2021</td>
+  <td>3:02:06 AM</td>
+  <td>117.3 MB</td>
+  <td><a href="https://mega.nz/file/FdRWmTQA#l5iNrQKBGjK4TnGrTk9oYI0-oLHsANu6hM3bQxLtS-o" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.7.1.apk</td>
+  <td>November 20, 2021</td>
+  <td>6:09:13 AM</td>
+  <td>117.3 MB</td>
+  <td><a href="https://mega.nz/file/RYZ3mJCZ#__B_Mg5fnMIT-NPoGuTCOHNi0QnbIAEE3v4oCMtpUIY" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.8.apk</td>
+  <td>November 28, 2021</td>
+  <td>3:08:13 AM</td>
+  <td>109.2 MB</td>
+  <td><a href="https://mega.nz/file/8YBAVKjA#8013D19trKRpvOjpfgbqQiqCgk9u93Ak7JqMYd2p5es" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.9 Christmas 2021.apk</td>
+  <td>December 6, 2021</td>
+  <td>3:06:04 PM</td>
+  <td>114.3 MB</td>
+  <td><a href="https://mega.nz/file/EEBSxBpC#tuE7_OiTDgEGSQuPNvya7a7sXYUwgKnTZJ6QnIYhTzk" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.10 New Hunt Gamemode.apk</td>
+  <td>December 14, 2021</td>
+  <td>5:11:03 PM</td>
+  <td>109.7 MB</td>
+  <td><a href="https://mega.nz/file/sdgXkKRb#W00QODiYQ-PQvuSri8OXZiM0Z54hApMPx2TKlvftaB4" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.11 Removal Holiday Lights.apk</td>
+  <td>January 10, 2022</td>
+  <td>3:04:59 PM</td>
+  <td>112.8 MB</td>
+  <td><a href="https://mega.nz/file/QRwQTQwR#ms4f0J8CfN5j11ewF5lUi09F4Z5wV_fWb9NRd8ARR2E" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.12 BETA SLIPTEST.apk</td>
+  <td>January 29, 2022</td>
+  <td>5:41:58 PM</td>
+  <td>117.3 MB</td>
+  <td><a href="https://mega.nz/file/lFJigZ7Z#eMO5sj2PWhPAaOz8zEyhznd33N5ifjFox5kxnLZDdWY" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.12 Cave Song.apk</td>
+  <td>January 30, 2022</td>
+  <td>2:46:20 PM</td>
+  <td>124.1 MB</td>
+  <td><a href="https://mega.nz/file/dBA3DLZD#vxOn3TvpWsESRmStBhcZrydaY3dNigB1yM7kQar5pHU" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.12.1.apk</td>
+  <td>February 4, 2022</td>
+  <td>10:05:41 PM</td>
+  <td>124.1 MB</td>
+  <td><a href="https://mega.nz/file/EYZUkCZA#0Pj8lDLOXcDoDYIIsK_P4i5q8k9YZ0CIAbIr_SVOxoY" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.13 GTAG ANNIVERSARY.apk</td>
+  <td>February 4, 2022</td>
+  <td>3:50:54 PM</td>
+  <td>124.2 MB</td>
+  <td><a href="https://mega.nz/file/8BojzLhI#6bofMv423F318Iq4sXfN9LtpvDJVL9OfY13lf6bLH6Y" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.14 Household Update.apk</td>
+  <td>February 19, 2022</td>
+  <td>4:10:08 PM</td>
+  <td>125.8 MB</td>
+  <td><a href="https://mega.nz/file/9IpwVIjT#7JmLARlJ48Qi_sEsPczvVFoe4al-oHvxHFaENdwukjg" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.15 New Mountain Map.apk</td>
+  <td>March 13, 2022</td>
+  <td>5:49:33 PM</td>
+  <td>142.8 MB</td>
+  <td><a href="https://mega.nz/file/YIZwULyB#EpVdkpm9kYgk0mbZHqVrtw7l4MLPjSyZ1EtPqQfJYwA" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.16 New Competitive Course.apk</td>
+  <td>March 16, 2022</td>
+  <td>5:10:19 PM</td>
+  <td>146.2 MB</td>
+  <td><a href="https://mega.nz/file/VNxBzb5b#AWZxnZGIsoxMYBcOD1lcXZMgB_jT1IGg2mL17dTN5BQ" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.17 Saint Patricks Day Update.apk</td>
+  <td>March 17, 2022</td>
+  <td>11:49:23 AM</td>
+  <td>144.9 MB</td>
+  <td><a href="https://mega.nz/file/8VwCHAjZ#eJ5_Cb-y69xyVoNmcsTC2XG-7HxxMAw2bBt-OGcKxis" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.18 Spring Update.apk</td>
+  <td>March 20, 2022</td>
+  <td>2:32:56 PM</td>
+  <td>158.5 MB</td>
+  <td><a href="https://mega.nz/file/JEokgKyY#4DE53nNVChSBQ4ZEODo4RO2T7axtSIGPibdtmPWSY0s" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.19.apk</td>
+  <td>March 24, 2022</td>
+  <td>2:59:19 PM</td>
+  <td>142.5 MB</td>
+  <td><a href="https://mega.nz/file/hJBk3QYb#q4qypqBHVVmqHD4sfiAV4_Woj40xoP6GG_Jip80zamg" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.19.1.apk</td>
+  <td>March 24, 2022</td>
+  <td>3:16:12 PM</td>
+  <td>147.8 MB</td>
+  <td><a href="https://mega.nz/file/RI5CXDhJ#vjE6oozESqDsqFh8_gzXnt_S5PkEY_qxq6SLcbXtRKk" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.20.apk</td>
+  <td>March 31, 2022</td>
+  <td>5:03:41 PM</td>
+  <td>161.0 MB</td>
+  <td><a href="https://mega.nz/file/tEQUkQCT#yQCmBCzxCN8tz75B5Q5FuEpX2PRfNnkFollIKDaVODQ" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.20.1.apk</td>
+  <td>March 31, 2022</td>
+  <td>5:18:01 PM</td>
+  <td>160.9 MB</td>
+  <td><a href="https://mega.nz/file/dQoFAQCA#t86GcNIK9YIhZX0QAy-sS9qwm8hDMVVRe17SXg9WOrY" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.20.2 April First Early.apk</td>
+  <td>March 31, 2022</td>
+  <td>5:36:56 PM</td>
+  <td>161.0 MB</td>
+  <td><a href="https://mega.nz/file/1NI0FTST#EO27x6K2l5oS_GZxpriVuxAxCCxVwqofPRJ5Fc-U95k" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.20.3 Human Tag April 1st.apk</td>
+  <td>April 1, 2022</td>
+  <td>3:22:57 PM</td>
+  <td>160.8 MB</td>
+  <td><a href="https://mega.nz/file/ZchiQKZT#OPBaj6dW9f2a2mHR8EnpmTFvtv1Swpl9WZ_pHEf7o80" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.21 April Costmetics.apk</td>
+  <td>April 9, 2022</td>
+  <td>10:17:34 AM</td>
+  <td>162.8 MB</td>
+  <td><a href="https://mega.nz/file/hRQA0QRT#CJ_7Hs_Tu-HV1UQv1-14mQoRPtQH7FGFZuP7U_pZGzA" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.21.1.apk</td>
+  <td>April 9, 2022</td>
+  <td>9:25:00 PM</td>
+  <td>163.2 MB</td>
+  <td><a href="https://mega.nz/file/0dxjHL5T#VTxeIFTEF-ni32oJarxpb3EW89AkHkKgHsxTunDbZhE" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.22 Rainy Update.apk</td>
+  <td>April 17, 2022</td>
+  <td>2:46:15 PM</td>
+  <td>169.0 MB</td>
+  <td><a href="https://mega.nz/file/VY5zgTra#B6GTIjI78Q3LSdqZJo-eRQxyvUcD05JadebpcclMTa8" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.22.1.apk</td>
+  <td>April 17, 2022</td>
+  <td>4:19:21 PM</td>
+  <td>169.3 MB</td>
+  <td><a href="https://mega.nz/file/oZRWTACT#FO6o_b7bvqCLLzjXcKmRyyeNEHrZvFR_6SBOUg3mDVE" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.22.2.apk</td>
+  <td>April 17, 2022</td>
+  <td>8:01:45 PM</td>
+  <td>169.0 MB</td>
+  <td><a href="https://mega.nz/file/4ApSFYKR#WrY579c6SJAB7gsciOF9AaJ1B4_LJ4IEvHhy7-do" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.23.apk</td>
+  <td>April 29, 2022</td>
+  <td>4:23:14 PM</td>
+  <td>170.4 MB</td>
+  <td><a href="https://mega.nz/file/ocQxjZpS#rr1CmF7wJB-Bhjj6ZJgiJqB3PQNNPGde6SQaLIVy-uI" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.24 Music Update.apk</td>
+  <td>May 8, 2022</td>
+  <td>9:22:27 PM</td>
+  <td>175.4 MB</td>
+  <td><a href="https://mega.nz/file/ZZQFDQyR#85Ev0jq3DOLK9kCBtwbBhF_ZuJ5xAg4Ie68uiJTLdIk" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.24.1.apk</td>
+  <td>May 8, 2022</td>
+  <td>10:06:50 PM</td>
+  <td>175.5 MB</td>
+  <td><a href="https://mega.nz/file/lVgFDRSa#v6ERX2B4aL-uWUGPVtKEy9F_yJ0WFiUbiqSyE87Zl-Q" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.25 New Quitar.apk</td>
+  <td>May 14, 2022</td>
+  <td>5:11:21 PM</td>
+  <td>189.2 MB</td>
+  <td><a href="https://mega.nz/file/sI5FFBiR#JekqVpm3XDxxez0nMoR-t_Qhy1A8qzS3sJP09TxILIE" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.25.1.apk</td>
+  <td>May 17, 2022</td>
+  <td>4:06:48 PM</td>
+  <td>189.9 MB</td>
+  <td><a href="https://mega.nz/file/tNA1kbKR#aljbv6_IrfLEQcI_qnJRtIeuThq_YLj3YwM5PxaD0_I" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.25.2.apk</td>
+  <td>June 10, 2022</td>
+  <td>4:34:21 PM</td>
+  <td>189.9 MB</td>
+  <td><a href="https://mega.nz/file/pYAWBRIZ#Mlqy3j4paKL9FznlF0Dju3MHdaywIGtCzUTDCE4-cfQ" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.25.3.apk</td>
+  <td>June 30, 2022</td>
+  <td>3:39:04 PM</td>
+  <td>189.9 MB</td>
+  <td><a href="https://mega.nz/file/hFIRSB4C#Z8hjo3CaA7WTD2mrs1f-RhpvY7AuibvbMsVeL2FdARE" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.25.4.apk</td>
+  <td>July 9, 2022</td>
+  <td>11:18:26 AM</td>
+  <td>189.9 MB</td>
+  <td><a href="https://mega.nz/file/oFAQDIzC#2mXmscw-j2UFRRuaGFytjb4ra-ho5Dn-8FNjuPeq4_8" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.25.5.apk</td>
+  <td>July 15, 2022</td>
+  <td>10:40:59 PM</td>
+  <td>190.0 MB</td>
+  <td><a href="https://mega.nz/file/lcpTWbjD#m98nYTcE4yfagkSGj0aAj25kyWOEDiJyWsbvBY6DIiY" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.26.apk</td>
+  <td>May 29, 2022</td>
+  <td>4:38:38 PM</td>
+  <td>189.9 MB</td>
+  <td><a href="https://mega.nz/file/BdBjRITK#YQB5VKdy8YnhjuRbsLy-eIMqouWOSIgnBP3xelia92Q" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.26.1 Summer Update.apk</td>
+  <td>July 18, 2022</td>
+  <td>11:29:19 AM</td>
+  <td>190.1 MB</td>
+  <td><a href="https://mega.nz/file/NVIw1ASK#cNdaO2iDrZ_9je6zgkkbpG-tYMMgNxFeT04HYa0dkEY" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.26.2.apk</td>
+  <td>August 2, 2022</td>
+  <td>1:56:15 PM</td>
+  <td>190.0 MB</td>
+  <td><a href="https://mega.nz/file/1QJD0SCJ#P_LYWFIq-sI8Zo8Ej7tHc9pLn82xFBjDUZ-uJtT56wk" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.26.3.apk</td>
+  <td>August 14, 2022</td>
+  <td>7:56:32 AM</td>
+  <td>190.1 MB</td>
+  <td><a href="https://mega.nz/file/BI5CDTCQ#ajltmMvxFr2I5QBvsIQEyAJR3l0z14-hSM8ooJPHNhM" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.26.4.apk</td>
+  <td>August 16, 2022</td>
+  <td>5:49:12 PM</td>
+  <td>190.1 MB</td>
+  <td><a href="https://mega.nz/file/oZQi2JAL#EOAMJS8vaYXWX4b09myZwIiNc46GZ45BMOu9Sxuo1pE" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.26.5.apk</td>
+  <td>August 18, 2022</td>
+  <td>11:15:37 AM</td>
+  <td>190.1 MB</td>
+  <td><a href="https://mega.nz/file/9EwSVaDQ#Y1cVpqlzv_p0r6XjP_Zv71gR0o2PUD_XMH2KBLZf-PM" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.27 New Paintbrawl Gamemode.apk</td>
+  <td>September 22, 2022</td>
+  <td>6:01:47 PM</td>
+  <td>204.7 MB</td>
+  <td><a href="https://mega.nz/file/5cg1iaoA#9oUZI1b5RvGmojCNo4Kq3szy0yzRe-JuR78S5oKYysY" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.27.1 New Holdible System.apk</td>
+  <td>September 22, 2022</td>
+  <td>8:27:20 PM</td>
+  <td>217.9 MB</td>
+  <td><a href="https://mega.nz/file/YFxnARQD#2edEbQpKU-fUXqwONIKxqowmIkwy7SSflpB6SZcyv4I" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.27.2.apk</td>
+  <td>September 22, 2022</td>
+  <td>9:58:59 PM</td>
+  <td>217.9 MB</td>
+  <td><a href="https://mega.nz/file/BNInQRhC#hBxbfE0b1c089pFDUBC-kvSFKju9KIe6yZ_H9SGW1dc" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.27.3.apk</td>
+  <td>September 22, 2022</td>
+  <td>11:29:19 PM</td>
+  <td>217.9 MB</td>
+  <td><a href="https://mega.nz/file/RY5m1L6S#I1bQ6BK5p9edDKP_ssX6WjcBonjTZ27VlKk3PhzMDS4" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.27.4.apk</td>
+  <td>September 26, 2022</td>
+  <td>3:21:36 AM</td>
+  <td>204.7 MB</td>
+  <td><a href="https://mega.nz/file/kUxj1A7T#zMizB-8Q8EUci3x6FtrEWD_-r-N5TJ7t4NI04lS-_QQ" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.27.5 Halloween 2022.apk</td>
+  <td>October 20, 2022</td>
+  <td>8:52:03 PM</td>
+  <td>252.1 MB</td>
+  <td><a href="https://mega.nz/file/1UZXQDbA#DNcwrko9YE6bu2uZfcwj-i2I3PFPgN_5COf8qoTljhA" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.27.6.apk</td>
+  <td>October 21, 2022</td>
+  <td>3:43:41 PM</td>
+  <td>252.1 MB</td>
+  <td><a href="https://mega.nz/file/BNx2yLDa#ub1FDxvV3F_9wCFgDuNG8_oU4iTTJzMV-Mm8dEWfIYw" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.29 Halloween Flashback.apk</td>
+  <td>October 28, 2022</td>
+  <td>2:55:27 PM</td>
+  <td>254.1 MB</td>
+  <td><a href="https://mega.nz/file/NFZUWI5K#kVPYubFGk_VTgHAu1cEXWJjz1TO7FCTrgohTgf11PZo" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.29.1.apk</td>
+  <td>October 28, 2022</td>
+  <td>4:06:32 PM</td>
+  <td>253.8 MB</td>
+  <td><a href="https://mega.nz/file/scYTmJJD#Pqw_YEZyLXPfAz13bbD72n__3PSaCPfHj3m5cjBz3iI" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.30 Privacy Policy.apk</td>
+  <td>November 5, 2022</td>
+  <td>4:50:30 PM</td>
+  <td>254.5 MB</td>
+  <td><a href="https://mega.nz/file/4J42VA4B#30LZOikzebSW_ItZ57zlFtD5GTi1gzOySaI6Zr9x6vM" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.31 Fall Update.apk</td>
+  <td>November 11, 2022</td>
+  <td>12:13:40 PM</td>
+  <td>238.3 MB</td>
+  <td><a href="https://mega.nz/file/cRJFyIDJ#_taP8DyahnYQy7xoU90xuRap5WVfm2gZfo_Bbfo7VOg" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.31.1.apk</td>
+  <td>November 11, 2022</td>
+  <td>4:27:12 PM</td>
+  <td>243.4 MB</td>
+  <td><a href="https://mega.nz/file/JJA0wJ4S#SNorfVjwZgm_SLAHy_mna3aFbFB5aeYG8JUbWh7kZ" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.32 Fall Flashback.apk</td>
+  <td>November 23, 2022</td>
+  <td>10:47:07 AM</td>
+  <td>247.7 MB</td>
+  <td><a href="https://mega.nz/file/tZoS2RhQ#6BJadrfZdN59XmEwO9puP996HRtk_TBGevRDfLjYIfw" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.33.apk</td>
+  <td>December 8, 2022</td>
+  <td>5:07:04 PM</td>
+  <td>295.1 MB</td>
+  <td><a href="https://mega.nz/file/FYQkFKLY#qscebMHJZPYWDQf-1LAMBY6u2ZuWB0_oSONFjYOEdkQ" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.33.1 oficial launch + New Clouds Map.apk</td>
+  <td>December 15, 2022</td>
+  <td>5:43:22 PM</td>
+  <td>302.6 MB</td>
+  <td><a href="https://mega.nz/file/ZFgC1D5T#NSKx_Q1ploy-T0t1b8kS00NAtf8Hj4MD2KNVg0HI8EY" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.33.2.apk</td>
+  <td>December 18, 2022</td>
+  <td>4:25:26 PM</td>
+  <td>313.4 MB</td>
+  <td><a href="https://mega.nz/file/0BgDxZoI#dJypx8y-F596vz_s_4ZrpcByXnDgCU1mD3SYeFiroiA" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.34 Christmas Update 2022.apk</td>
+  <td>December 22, 2022</td>
+  <td>5:32:07 PM</td>
+  <td>345.4 MB</td>
+  <td><a href="https://mega.nz/file/pRI3TZgZ#cQPQBds3d8CCp7eRQFusYRQjtGApv6vCWNXyvqmE4LA" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.34.1.apk</td>
+  <td>December 24, 2022</td>
+  <td>12:07:06 AM</td>
+  <td>345.4 MB</td>
+  <td><a href="https://mega.nz/file/pY5GnQjS#8enfZtCOM5LWjv3VipE0cP4THOoyxPeWdEa0DxNB1Vc" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.34.2.apk</td>
+  <td>December 27, 2022</td>
+  <td>2:20:34 AM</td>
+  <td>344.6 MB</td>
+  <td><a href="https://mega.nz/file/hNYHiY4A#IIRePNK5vVbYnf3opji9FXZ7mH9X6SXoQjf0yygnM4E" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.35 Holiday Flashback.apk</td>
+  <td>January 11, 2023</td>
+  <td>2:21:47 PM</td>
+  <td>349.3 MB</td>
+  <td><a href="https://mega.nz/file/tR5URIzS#YRAb8EFfPpDvQRPRGgvAcy-b1UHbW_-ndd1ilA9AS9U" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.36.apk</td>
+  <td>January 27, 2023</td>
+  <td>11:49:02 AM</td>
+  <td>318.0 MB</td>
+  <td><a href="https://mega.nz/file/FQAVmJKa#4rQE4MF879ZoDsD8nMv3xcy3Pq4bcD-_Awvg6OLa4ko" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.37.apk</td>
+  <td>February 10, 2023</td>
+  <td>12:27:15 PM</td>
+  <td>341.4 MB</td>
+  <td><a href="https://mega.nz/file/IVQVhIRQ#kBgHjrqnUL4R2p6fPxcm7TWT2ib9LaYdCRgfJLQTo-M" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.37.1.apk</td>
+  <td>February 10, 2023</td>
+  <td>3:12:12 PM</td>
+  <td>321.9 MB</td>
+  <td><a href="https://mega.nz/file/UBw3hIYS#_-X-JV0NK8MWr5_mOtGzCY90Waq5p1hFQvEp7XwonDk" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.38.apk</td>
+  <td>February 23, 2023</td>
+  <td>7:09:01 PM</td>
+  <td>333.9 MB</td>
+  <td><a href="https://mega.nz/file/cVQG3AiK#Bkj2Mxhm5zQ_7GMBDnIS6o7rlkbW7GaqKVwpR94nUu4" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.39.apk</td>
+  <td>March 6, 2023</td>
+  <td>5:32:11 PM</td>
+  <td>329.0 MB</td>
+  <td><a href="https://mega.nz/file/RNA1ALAJ#hsgFCNC0aXahVnEpsujxmhWvf9KKWg1evnE424wVRgI" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.39.1.apk</td>
+  <td>March 11, 2023</td>
+  <td>1:19:44 AM</td>
+  <td>329.0 MB</td>
+  <td><a href="https://mega.nz/file/4QxFSLyC#0DUYKZXcV2wyEY9bZAKPdeZPGIZppkUc6lvefRhmzj8" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.40 Basement Update.apk</td>
+  <td>March 24, 2023</td>
+  <td>2:00:53 PM</td>
+  <td>348.5 MB</td>
+  <td><a href="https://mega.nz/file/xIYAxKaB#B9ZRoYO5NbXrxxjlELE21kMD4XHn-PbHW_boFRRsc6M" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.41.apk</td>
+  <td>March 30, 2023</td>
+  <td>9:50:23 PM</td>
+  <td>355.6 MB</td>
+  <td><a href="https://mega.nz/file/6wJgEQhJ#KjOeUz6AwqvB70vAKGhiWiPuyI4vTilvTM1YTPjUdmQ" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.42.apk</td>
+  <td>April 4, 2023</td>
+  <td>4:26:41 PM</td>
+  <td>356.3 MB</td>
+  <td><a href="https://mega.nz/file/vpZxzDAY#4T3z-ulkRUVWnjg937OxlAUGK-bWbrIQdcVEGiQSLCg" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.43.apk</td>
+  <td>April 21, 2023</td>
+  <td>12:06:17 AM</td>
+  <td>365.3 MB</td>
+  <td><a href="https://mega.nz/file/DhoWGbCR#rErwY9djmFCnw0QRWk2oo0BkuyGbPi15lMeYzDi-1OY" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.44.apk</td>
+  <td>April 21, 2023</td>
+  <td>4:21:10 PM</td>
+  <td>365.3 MB</td>
+  <td><a href="https://mega.nz/file/79QykCBS#SPKAPNG9g20Y4IgiNU1909jlEZ0HEPp2K32Q7GeVipM" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.44.1.apk</td>
+  <td>April 21, 2023</td>
+  <td>5:09:12 PM</td>
+  <td>365.3 MB</td>
+  <td><a href="https://mega.nz/file/W0ZwwDIZ#nbsFKNU7flbAspyD_8Ctv7gx0T8Ryp6FMHTroiU4Lhg" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.45.apk</td>
+  <td>May 4, 2023</td>
+  <td>7:48:18 PM</td>
+  <td>377.3 MB</td>
+  <td><a href="https://mega.nz/file/2s5B2DbA#-rgPkEqwYAzFzgWKT1ENG3opVxmp0kAfuJSHpvzbLqE" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.45.1.apk</td>
+  <td>May 6, 2023</td>
+  <td>3:37:00 PM</td>
+  <td>399.1 MB</td>
+  <td><a href="https://mega.nz/file/WoZ0gKpT#diIEXFGToxWyf9KDTyylughqYlYqb-4EoYSmxDeIGq8" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.46.apk</td>
+  <td>May 26, 2023</td>
+  <td>11:22:59 AM</td>
+  <td>414.3 MB</td>
+  <td><a href="https://mega.nz/file/fpAziC4R#4R38QqADXpMJJDlfftXGTuf5SNih9nP-viOz9EaBfrQ" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.47.apk</td>
+  <td>June 1, 2023</td>
+  <td>8:00:12 PM</td>
+  <td>412.6 MB</td>
+  <td><a href="https://mega.nz/file/64ZwlZwB#y2eoV5g51zZ3rHCHwmgJr6_YWzhkBo-7CBmUB-furLE" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.48.apk</td>
+  <td>June 8, 2023</td>
+  <td>11:43:25 AM</td>
+  <td>410.9 MB</td>
+  <td><a href="https://mega.nz/file/DxZVjZKA#aEYtLTgPXWx2VKe5AFzJN6VwHd9GLMZkAnawyo3gbQ0" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.49.apk</td>
+  <td>June 15, 2023</td>
+  <td>1:33:27 PM</td>
+  <td>408.6 MB</td>
+  <td><a href="https://mega.nz/file/r5xhnQ5S#Yx7LbK5xAKFITdnti1ZK7Ijkj4cNyZw1GuzK8Zg_XnE" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.50.apk</td>
+  <td>June 20, 2023</td>
+  <td>8:30:16 PM</td>
+  <td>408.6 MB</td>
+  <td><a href="https://mega.nz/file/bp5FUBgR#ROpiKWEyfz4vPEhT0KNkEHx0HkT5Gi9Tng3pjHlr09Y" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.50.1.apk</td>
+  <td>June 21, 2023</td>
+  <td>4:41:17 PM</td>
+  <td>408.6 MB</td>
+  <td><a href="https://drive.google.com/uc?export=download&id=1Yn6dIr1oNQEGCq2P1GbCETW_CPxIaAos" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.51.apk</td>
+  <td>June 28, 2023</td>
+  <td>9:22:20 PM</td>
+  <td>408.6 MB</td>
+  <td><a href="https://drive.google.com/uc?export=download&id=1DJS3f4440s1Qc3BZjDetDLRR_eSVg-UE" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.52.apk</td>
+  <td>June 29, 2023</td>
+  <td>6:43:21 PM</td>
+  <td>411.5 MB</td>
+  <td><a href="https://drive.google.com/uc?export=download&id=1h6ToP_QGly43DSpINQjnKvtUjju4_t_t" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.53.apk</td>
+  <td>July 14, 2023</td>
+  <td>11:49:12 AM</td>
+  <td>414.7 MB</td>
+  <td><a href="https://drive.google.com/uc?export=download&id=1GgduKhatptFWWzH4_ydw4yKlmeD_N4UO" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.53.1.apk</td>
+  <td>July 14, 2023</td>
+  <td>3:13:15 PM</td>
+  <td>414.7 MB</td>
+  <td><a href="https://drive.google.com/uc?export=download&id=1FEO15hJpQYQjgoY1Y11CPM0wA24OKNDc" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.54.apk</td>
+  <td>July 27, 2023</td>
+  <td>10:45:06 PM</td>
+  <td>444.6 MB</td>
+  <td><a href="https://drive.google.com/uc?export=download&id=1deXzgAxOVY4Sw_UkuizcK27qIEku8Euy" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.54.1.apk</td>
+  <td>July 28, 2023</td>
+  <td>8:31:34 PM</td>
+  <td>441.4 MB</td>
+  <td><a href="https://drive.google.com/uc?export=download&id=1oer_dyq8bK5ILutRG3QbQdvUuRjFpmlh" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.55.apk</td>
+  <td>August 10, 2023</td>
+  <td>4:10:54 PM</td>
+  <td>451.4 MB</td>
+  <td><a href="https://drive.google.com/uc?export=download&id=118y0yoE2tXA_CBcE01ugpVThv4zM9V98" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.55.1.apk</td>
+  <td>August 14, 2023</td>
+  <td>3:23:57 PM</td>
+  <td>453.8 MB</td>
+  <td><a href="https://drive.google.com/uc?export=download&id=10a1NoBKNEc9fN38YsHeI45Kyx1mBjbqj" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.56.apk</td>
+  <td>August 25, 2023</td>
+  <td>2:03:23 AM</td>
+  <td>457.7 MB</td>
+  <td><a href="https://drive.google.com/uc?export=download&id=10cgyXRjKlRVXMHtOv4VYN-lVri_TSWna" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.57.apk</td>
+  <td>September 8, 2023</td>
+  <td>11:40:56 AM</td>
+  <td>317.7 MB</td>
+  <td><a href="https://drive.google.com/uc?export=download&id=11Mmn5OfFAL2x_lHzxVQYLzz7SPhbofPi" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.58.apk</td>
+  <td>September 21, 2023</td>
+  <td>9:50:18 PM</td>
+  <td>331.7 MB</td>
+  <td><a href="https://drive.google.com/uc?export=download&id=11QTl1l8aN_KSpdipMaWC7eVIZqiDLcSk" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.58.1.apk</td>
+  <td>September 22, 2023</td>
+  <td>9:17:13 PM</td>
+  <td>331.8 MB</td>
+  <td><a href="https://drive.google.com/uc?export=download&id=11V8jC6M4H24r6ibMI-j1lmde5CkiLUa4" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.59.apk</td>
+  <td>October 5, 2023</td>
+  <td>7:45:08 PM</td>
+  <td>356.2 MB</td>
+  <td><a href="https://drive.google.com/uc?export=download&id=11pjL4I43t7Kiiw5KjIZtgXR2WPQoZg4h" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.59.1.apk</td>
+  <td>October 6, 2023</td>
+  <td>4:33:19 PM</td>
+  <td>356.2 MB</td>
+  <td><a href="https://drive.google.com/uc?export=download&id=11tQEiaxHydO9syIeaTCB6Le_9cHNKIeL" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.60.apk</td>
+  <td>October 19, 2023</td>
+  <td>4:36:13 PM</td>
+  <td>367.6 MB</td>
+  <td><a href="https://drive.google.com/uc?export=download&id=11uzIF0hidKNGDz4_Uwq2G9JDrXomFn44" class="download-btn">Download</a></td>
+</tr>
+<tr>
+  <td>GorillaTag v1.1.60.1.apk</td>
+  <td>October 25, 2023</td>
+  <td>2:59:13 PM</td>
+  <td>367.6 MB</td>
+  <td><a href="https://drive.google.com/uc?export=download&id=123PxvtHvZy0BWO1gJCnJKFqU-mGfwrPH" class="download-btn">Download</a></td>
+</tr>
+    </tbody>
+  </table>
 
-        function populateVersions() {
-            tableBody.innerHTML = '';
-            versions.forEach(version => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${version.name}</td>
-                    <td>${version.date}</td>
-                    <td><a href="${version.file}" target="_blank">Download</a></td>
-                `;
-                tableBody.appendChild(row);
-            });
-        }
+  <table class="versions-table" id="pcvr-versions" style="display:none;">
+    <thead>
+      <tr>
+        <th>Version</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Size</th>
+        <th>Download</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>gorilla124.zip</td>
+        <td>January 28, 2020</td>
+        <td>?</td>
+        <td>42.4 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1ZFLSrzPhYf1DwSC02ETp3QsEKUT9cQCw" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTestJan29.zip</td>
+        <td>January 29, 2020</td>
+        <td>?</td>
+        <td>44.4 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1G4JVkDpwbTd810S3l5KB7zS-_XUP0MBZ" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaLocoFeb20.zip</td>
+        <td>February 20, 2020</td>
+        <td>?</td>
+        <td>73.0 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1KuKLkx7BhAe4ts9LUm9hrV5DWTvOOnVM" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTagMay25Final.zip</td>
+        <td>May 25, 2020</td>
+        <td>?</td>
+        <td>46.9 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=19LmSG_ykTXR5UEvPu1FbteNhmTHiddlp" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTagMay26Final.zip</td>
+        <td>May 26, 2020</td>
+        <td>?</td>
+        <td>46.8 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1GztccDY-3M3MigyrDch-mtE4LaY1viDn" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTagMay27.zip</td>
+        <td>May 27, 2020</td>
+        <td>?</td>
+        <td>46.4 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1CiPxsk_F4CqYXpUMHa7Kuw2QSfJzdp40" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTagMay27Final.zip</td>
+        <td>May 27, 2020</td>
+        <td>?</td>
+        <td>47.5 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1ZheFnm_6fSeCKdTlLTR_-JVqiqSXyV9U" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTagMay28Final.zip</td>
+        <td>May 28, 2020</td>
+        <td>?</td>
+        <td>54.5 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1akTKbi31yVhsSXUiFJ4sBl4ymUK64_zj" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTagMay29Early.zip</td>
+        <td>May 29, 2020</td>
+        <td>?</td>
+        <td>64.7 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1_lb-3OAB2MhVTxHWCNJfVebNxHGRtxV3" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTagMay30Collision.zip</td>
+        <td>May 30, 2020</td>
+        <td>?</td>
+        <td>45.5 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1lvIjC1G_V_UVj54Jzu-DJKM6ha45icB3" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTagMay30CollisionHotPatch2.zip</td>
+        <td>May 30, 2020</td>
+        <td>?</td>
+        <td>45.5 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1zlu8bCgeDOCbZjLbX4DX6B0v67OtXvDm" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTagMay30InfectionUpdateFingersCrossed.zip</td>
+        <td>May 30, 2020</td>
+        <td>?</td>
+        <td>45.4 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=16d_0GurL9SDQ2AvSzGxPd3xgmVON0w4Q" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTagMay30InfectionBreakFix.zip</td>
+        <td>May 30, 2020</td>
+        <td>?</td>
+        <td>45.5 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1zS8L4T_onAGe-08wavKkGMv8PWcOutZb" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTagMay31SpectorCam.zip</td>
+        <td>May 31, 2020</td>
+        <td>?</td>
+        <td>40.2 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1NQU-2zlUYJ6eyFjiEdeJ44qreHGIB2I_" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTagMay31SteamVR.zip</td>
+        <td>May 31, 2020</td>
+        <td>?</td>
+        <td>45.9 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1elDipQ4eG1vn0NEyRbUyrU_b1IOwLSAI" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTagMay31Final.zip</td>
+        <td>May 31, 2020</td>
+        <td>?</td>
+        <td>47.6 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1ch1OCaFm3c2q_Xet5EzoW6u7CZCyB0kx" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTagJune1Live.zip</td>
+        <td>June 1, 2020</td>
+        <td>?</td>
+        <td>45.9 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1Qg-y685v2CvH67u9enn6zB8f3isb7cdc" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTagJune5.zip</td>
+        <td>June 5, 2020</td>
+        <td>?</td>
+        <td>46.5 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=117Wa-iSGEiohec4a7BlPmF3MsSFXgAHQ" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTagJune6.zip</td>
+        <td>June 6, 2020</td>
+        <td>?</td>
+        <td>44.1 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1WdQebTk724zsmGaksFyxcEXsuLwg0sYr" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTagJune7HotFix.zip</td>
+        <td>June 7, 2020</td>
+        <td>?</td>
+        <td>44.1 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1Tqjksv_FmiI0V8a4L6oXoFKqCI6Bv374" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTagCaveTestJune9.zip</td>
+        <td>June 9, 2020</td>
+        <td>?</td>
+        <td>48.4 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1rUEiCxYq8HMWQxZXaf-UyfS_1YSZZwF2" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTagCaveJune9.zip</td>
+        <td>June 9, 2020</td>
+        <td>?</td>
+        <td>47.9 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1VvJqg3vJYiX1zGMK-xh0L79iSJoyKMv7" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>TransparentBlue.zip</td>
+        <td>June 11, 2020</td>
+        <td>?</td>
+        <td>47.0 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1gCNOV5gQt1DkwHOxR9PV88FsYhPawpo8" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>Crusher.zip</td>
+        <td>June 12, 2020</td>
+        <td>?</td>
+        <td>47.7 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1VStBkd1GgIF9GrVAX1yWWSVTi9c72o3e" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>MessagesOptimize.zip</td>
+        <td>June 12, 2020</td>
+        <td>?</td>
+        <td>47.1 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1kwYepYUevwO1WxX5LlRqTGBtou0CPgzc" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>ServerIsKill.zip</td>
+        <td>June 12, 2020</td>
+        <td>?</td>
+        <td>47.0 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1GDbZDu5XyiMrQdHe8Z0uFzuacqwy_3Em" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>CTFProto.zip</td>
+        <td>June 14, 2020</td>
+        <td>?</td>
+        <td>87.7 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=174dQXorxbhHLqjr0XZ5VfqBfNsp6JnDS" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>CTFProtoBetter.zip</td>
+        <td>June 14, 2020</td>
+        <td>?</td>
+        <td>87.7 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1aXRxo57m_hPjgSlcVqtLs44SJU2EeVUv" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>CTFProtoBetterer.zip</td>
+        <td>June 14, 2020</td>
+        <td>?</td>
+        <td>50.6 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=18SK2k2-1cXgr5wFK2Ah466wfvP76-yh3" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>CTFProtoNapTime.zip</td>
+        <td>June 15, 2020</td>
+        <td>?</td>
+        <td>50.5 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1-Lp7pY8ficBClo0z1HshG2lSE6dSGuOw" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>CTFProtoSleepTime.zip</td>
+        <td>June 15, 2020</td>
+        <td>?</td>
+        <td>50.5 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=14a2U0ubocqwjxEmgxRrl-6RRvGmgkXZj" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>CTFProtoAlive.zip</td>
+        <td>June 16, 2020</td>
+        <td>?</td>
+        <td>51.4 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1GiJcNX-YktMWYprIZ2KDWNSN3nxeucyT" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>CTFProtoDead.zip</td>
+        <td>June 16, 2020</td>
+        <td>?</td>
+        <td>56.6 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1oqvSF0oMB3cF4GW58V0MW26NlmXwd5jl" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+      <td>CTFProtoSpirit.zip</td>
+        <td>June 17, 2020</td>
+        <td>?</td>
+        <td>51.4 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1utVBWmUDr-gxJzHNY84wcjhrH4Olys4N" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>Lobby.zip</td>
+        <td>June 23, 2020</td>
+        <td>?</td>
+        <td>47.0 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1t4l6uoTeK43nZyFPSakOZxSrkuZJsCyo" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>ColorPick.zip</td>
+        <td>June 29, 2020</td>
+        <td>?</td>
+        <td>45.2 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1WIAE5MwC_yxSDTfAGizb0elVVDagdX9G" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>PVE.zip</td>
+        <td>July 16, 2020</td>
+        <td>?</td>
+        <td>47.9 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=13E3xJcTsHjmxi1Ush2V8Awnvd37spS6z" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>PVEFix.zip</td>
+        <td>July 16, 2020</td>
+        <td>?</td>
+        <td>47.9 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=11i9OT6pk3PwsPHm8U7QJ3sdxCQ3iYYA7" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>TutorialName.zip</td>
+        <td>August 4, 2020</td>
+        <td>?</td>
+        <td>45.9 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1dj0O_KZyLrSxrrYx5hEW5_7liCeyHNVv" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>Fingers.zip</td>
+        <td>August 7, 2020</td>
+        <td>?</td>
+        <td>47.9 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1A2bERsB3iWb4iGV_GFFyyf0G2nbnGNoL" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>Cave.zip</td>
+        <td>August 8, 2020</td>
+        <td>?</td>
+        <td>46.0 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1EfJPuEUy6PXOhWjjm2KRni0NygCK0zEJ" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>WowGraphics.zip</td>
+        <td>August 13, 2020</td>
+        <td>?</td>
+        <td>70.0 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1rAe_oKWIKyPaDW-jLwJW-piqXnWa9_jN" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>TagRumble.zip</td>
+        <td>August 21, 2020</td>
+        <td>?</td>
+        <td>44.0 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=10gRoymAIkNcDLe7N47D8iknzuuTHvrTr" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>ScoreBoard.zip</td>
+        <td>August 29, 2020</td>
+        <td>?</td>
+        <td>44.0 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1sl8qC_w2lhX_rKVlhHBPCt7utGrieRPH" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>XP.zip</td>
+        <td>September 6, 2020</td>
+        <td>?</td>
+        <td>44.3 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=18Hwih9PVCxPV9wJ8FrvP4G04pUwH5W7Q" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>XPFix.zip</td>
+        <td>September 7, 2020</td>
+        <td>?</td>
+        <td>44.3 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1tpVP8hDzmYhwdI_QC4SLwn_By9ql78Hu" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>PerfFix.zip</td>
+        <td>September 12, 2020</td>
+        <td>?</td>
+        <td>49.9 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1x-XVTK3SBKPUp2Ra5W5v8BWVtYCN-4Rs" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>1v1UntestedLol.zip</td>
+        <td>September 19, 2020</td>
+        <td>?</td>
+        <td>49.7 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1OdyhpQQI4fMx0f7PcBq_y3T470cEcPjj" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>BodyTag.zip</td>
+        <td>September 26, 2020</td>
+        <td>?</td>
+        <td>49.7 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=159d1H1T2oKvEQDFyNoNG45TYg2wsyK8E" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>BodyTagPerf.zip</td>
+        <td>September 27, 2020</td>
+        <td>?</td>
+        <td>49.7 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1FXEvQo42C37r51nsgqqPYZedDBeXirYz" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>NewMovement.zip</td>
+        <td>October 18, 2020</td>
+        <td>?</td>
+        <td>49.9 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1dQAuh2uKaU8TMqq5p25xCHvoNWuhWxRF" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>StickTurnFix.zip</td>
+        <td>October 19, 2020</td>
+        <td>?</td>
+        <td>49.9 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1gzpGi-07ZUEXAyrv4OJVJFdoBjB3zrsw" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>PitForest.zip</td>
+        <td>November 12, 2020</td>
+        <td>?</td>
+        <td>81.4 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1G8gNa-XXISR1_XOaZtPEl_5M1YY6qrAU" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>PreAlpha.zip</td>
+        <td>November 17, 2020</td>
+        <td>?</td>
+        <td>79.8 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1cloUIGdgfGkhu50IF3__jdmj6pNP5JmN" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>PreAlpha1dot1.zip</td>
+        <td>November 22, 2020</td>
+        <td>?</td>
+        <td>74.2 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1F_iJDOl4TJQeXnbAe1JqKHu9E-fmbpVf" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>PreAlpha1dot2.zip</td>
+        <td>November 25, 2020</td>
+        <td>?</td>
+        <td>74.2 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1jDO2h7cXF1cgict3NnShI7EXbc6hiTnc" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>PreAlpha1dot4.zip</td>
+        <td>December 19, 2020</td>
+        <td>?</td>
+        <td>71.3 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1sHuZQx-fmYYp5XNELiN3Yq-qCbN3Gu6m" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>PreAlpha1dot5.zip</td>
+        <td>December 19, 2020</td>
+        <td>?</td>
+        <td>72.4 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1vSJW1cAOfL1Zu3n-7cMGiIIRkCKz6YWk" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>PreAlpha1dot5v2.zip</td>
+        <td>December 19, 2020</td>
+        <td>?</td>
+        <td>72.4 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1tyZOCeJ5Sja7czsw6GimsVowUwQnx1lH" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>PreAlpha1dot5v3HotFix.zip</td>
+        <td>December 24, 2020</td>
+        <td>?</td>
+        <td>72.4 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1XHO7sN8RB8PJbtIjWO88kD-f7Rr9_-t7" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>PreAlpha1dot6.zip</td>
+        <td>December 29, 2020</td>
+        <td>?</td>
+        <td>72.9 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1xWFNjlYWQnAvNVQqihbqk7Fbb6ZHOgiD" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>PreAlpha1dot7.zip</td>
+        <td>January 7, 2021</td>
+        <td>?</td>
+        <td>73.0 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1QHTDDGWCCf4kOLcKewq7reDb_6MAny2C" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>PreAlpha1dot8.zip</td>
+        <td>February 4, 2021</td>
+        <td>?</td>
+        <td>85.6 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1ziF0zJerHnJip36HHbWyGTzC-K-zpNYN" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTag v1.0.0 Launch Day.zip</td>
+        <td>February 7, 2021</td>
+        <td>?</td>
+        <td>56.0 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1kqIuJSYNnWLBb2-io7GKMbPeXep2v5CZ" class="download-btn">Download</a></td>
+      </tr>
+      <tr>
+        <td>GorillaTag v1.0.1.zip</td>
+        <td>February 15, 2021</td>
+        <td>?</td>
+        <td>71.3 MB</td>
+        <td><a href="https://drive.google.com/uc?export=download&id=1cDZ5CSx0D7KOfgWgbzIp_9H7Ny8mEyhg" class="download-btn">Download</a></td>
+      </tr>
 
-        function filterVersions() {
-            const query = document.getElementById('versions-search').value.toLowerCase();
-            tableBody.innerHTML = '';
-            versions.filter(version => version.name.toLowerCase().includes(query)).forEach(version => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${version.name}</td>
-                    <td>${version.date}</td>
-                    <td><a href="${version.file}" target="_blank">Download</a></td>
-                `;
-                tableBody.appendChild(row);
-            });
-        }
 
-        function updateBackground() {
-            const monthBackgrounds = {
-                1: 'BG1.jpg',
-                2: 'BG2.jpg',
-                3: 'BG3.jpg',
-                4: 'BG4.jpg',
-                5: 'BG5.jpg',
-                6: 'BG6.jpg',
-                7: 'BG7.jpg',
-                8: 'BG8.jpg',
-                9: 'BG9.jpg',
-                10: 'BG10.jpg',
-                11: 'BG11.jpg',
-                12: 'BG12.jpg'
-            };
+    </tbody>
+  </table>
 
-            const currentMonth = new Date().toLocaleString('en-US', { timeZone: 'America/New_York', month: 'numeric' });
-            const backgroundFile = monthBackgrounds[currentMonth];
-            document.body.style.backgroundImage = `url('${backgroundFile}')`;
-        }
+</div>
 
-        window.onload = () => {
-            populateVersions();
-            updateBackground();
-        };
-    </script>
+<div class="tab-content" id="install">
+  <h2>How to Install</h2>
+  <p>This video will teach you on how to download these old versions: [OCULUS USERS]</p>
+  <!-- Embedded YouTube video (fixed embed format) -->
+  <iframe class="youtube-video" src="https://www.youtube.com/embed/Cdc5ajyG-rg" allowfullscreen></iframe>
+</div>
+
+<div class="tab-content" id="socials">
+  <h2>Socials, Inspirations, Credits and Others</h2>
+  <ul>
+    <li><a href="https://oculusdb.rui2015.me" target="_blank">OculusDB</a></li>
+    <li><a href="https://www.youtube.com/@TheGorillaTagVersionArchiv/featured" target="_blank">The GorillaTag Version Archive YT</a></li>
+    <li><a href="https://sidequestvr.com/" target="_blank">SideQuest</a></li>
+    <li><a href="https://www.gorillatagvr.com/#explore-monke-section" target="_blank">GorillaTag Website</a></li>
+    <li><a href="https://omniarchive.net/downloads/" target="_blank">OmniArchive</a></li>
+    <li><a href="https://github.com/ComputerElite/QuestAppVersionSwitcher/releases" target="_blank">QuestAppVersionSwitcher</a></li>
+    <li><a href="https://www.meta.com/experiences/gorilla-tag/4979055762136823/" target="_blank">GorillaTag Download Meta</a></li>
+    <li><a href="https://store.steampowered.com/app/1533390/Gorilla_Tag/" target="_blank">GorillaTag Download Steam</a></li>
+    <li><a href="https://x.com/LemmingVR" target="_blank">LemmingVR's Twitter Page</a></li>
+    <li><a href="https://discord.com/invite/cFbMuwyTHk" target="_blank">GorillaTag Discord Server</a></li>
+    <li><a href="https://www.youtube.com/@omniarchive" target="_blank">OmniArchive YT</a></li>
+    <li><a href="https://github.com/lunakittyyy/GTHistoricalBuilds" target="_blank">GTHistoricalVersions</a></li>
+    <li><a href="https://tgtva.itch.io/the-gorillatag-version-archive" target="_blank">The GorillaTag Version Archive Itch.io</a></li>
+    <li><a href="https://sidequestvr.com/download" target="_blank">SideQuest Advanced Installer and App Download</a></li>
+    <li><a href="https://www.anotheraxiom.com/" target="_blank">Another Axiom</a></li>
+    <li><a href="https://drive.google.com/uc?export=download&id=1bgiEt6gm0uf-vXwvcVRqy5SWdPf-QJjx" target="_blank">The GorillaTag Version Archive App (Android)</a></li>
+    <li><a href="https://www.youtube.com/@ForkWGZ/home" target="_blank">Creators YT</a></li>
+  </ul>
+</div>
+
+<div class="tab-content" id="other-versions">
+  <h2>Other Website Versions</h2>
+  <ul>
+    <li><a href="https://drive.google.com/uc?export=download&id=1r-JLcOWpEg6RATulbP-k-HMbSDKgVjtm" target="_blank">Version 1.0</a> – Released: August 6, 2024</li>
+    <li><a href="https://drive.google.com/uc?export=download&id=1Doe9FUTyCjZAhRPJ-IFf-GwHZ-v-McRl" target="_blank">Version 1.1</a> – Released: August 7, 2024</li>
+    <li><a href="https://drive.google.com/uc?export=download&id=1GEkiNnKxpubj7x7-82fRAeM698SycOeK" target="_blank">Version 1.2</a> – Released: September 16, 2024</li>
+    <li><a href="https://drive.google.com/uc?export=download&id=1TROMubzcYEDXBgJd06urbyowtvaaASwg" target="_blank">Version 1.3</a> – Released: September 16, 2024</li>
+    <li><a href="https://drive.google.com/uc?export=download&id=1zqOTs3ghrhW3Uw_Jq7-UxKpTV7jUi5IQ" target="_blank">Version 1.4</a> – Released: October 23, 2024</li>
+    <li><a href="https://drive.google.com/uc?export=download&id=178Uecz-Dzz_ELPe10wsb-OKMBnaiuDvv" target="_blank">Version 1.5</a> – Released: October 25, 2024</li>
+    <li><a href="https://drive.google.com/uc?export=download&id=1BNRVKkdub_f_V8uLte6Fro4Aj8QIRJA-" target="_blank">Version 1.6</a> – Released: October 29, 2024</li>
+    <li><a href="https://drive.google.com/uc?export=download&id=136lBOUvwZkeaxAOnEaWIeU9PD89hoEsy" target="_blank">Version 1.7</a> – Released: November 10, 2024</li>
+    <li><a href="https://drive.google.com/uc?export=download&id=1O0Q6R3F3vfuMM3ggcUcLP9LEwTY76srM" target="_blank">Version 1.8</a> – Released: December 1, 2024</li>
+    <li><a href="https://drive.google.com/uc?export=download&id=1hJi_wAnLVXG0Wx8NMp-V5UBuhqjA-RYZ" target="_blank">Version 2.0</a> – Released: February 4, 2025</li>
+    <li><a href="https://drive.google.com/uc?export=download&id=1Fbzx8um-_aGHXGdfRxfT3Vk6OHxECfsJ" target="_blank">Version 2.1</a> – Released: February 6, 2025</li>
+    <li><a href="https://drive.google.com/uc?export=download&id=1vt7KnY25jiZJw3ePo0RUjYmLq7ys6Bsw" target="_blank">Version 2.2</a> – Released: February 6, 2025</li>
+    <li><a href="https://drive.google.com/uc?export=download&id=1FypTBFnmbGyZoEtWLCGlLEcSMIJ9_h09" target="_blank">Version 2.3</a> – Released: February 15, 2025</li>
+    <li><a href="https://drive.google.com/uc?export=download&id=1D5Db50MPOKRa0i-cuY1-HDTHRzbWoJeL" target="_blank">Version 2.4</a> – Released: March 19, 2025</li>
+  </ul>
+</div>
+
+<script>
+  const tabs = document.querySelectorAll('.tab');
+  const contents = document.querySelectorAll('.tab-content');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+
+      contents.forEach(c => c.classList.remove('active'));
+      const target = document.getElementById(tab.dataset.tab);
+      target.classList.add('active');
+    });
+  });
+
+  const toggleBtn = document.getElementById('toggle-pcvr');
+  const normalTable = document.getElementById('normal-versions');
+  const pcvrTable = document.getElementById('pcvr-versions');
+  const downloadCountEl = document.getElementById('download-count');
+
+  toggleBtn.addEventListener('click', () => {
+    if(normalTable.style.display === 'none'){
+      normalTable.style.display = '';
+      pcvrTable.style.display = 'none';
+      updateDownloadCount('normal');
+    } else {
+      normalTable.style.display = 'none';
+      pcvrTable.style.display = '';
+      updateDownloadCount('pcvr');
+    }
+  });
+
+  function updateDownloadCount(mode = 'normal') {
+    let count = 0;
+    if (mode === 'normal') {
+      count = document.querySelectorAll('#normal-versions .download-btn').length;
+    } else {
+      count = document.querySelectorAll('#pcvr-versions .download-btn').length;
+    }
+    downloadCountEl.textContent = `Available Versions: ${count}`;
+  }
+
+  updateDownloadCount('normal');
+
+
+
+  const bgContainer = document.getElementById('bg-container');
+  const usTime = new Date().toLocaleString("en-US", {timeZone: "America/New_York"});
+  const usMonth = new Date(usTime).getMonth() + 1;
+  bgContainer.style.backgroundImage = `url('BG${usMonth}.jpg')`;
+</script>
+
 </body>
 </html>
